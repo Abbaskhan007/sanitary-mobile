@@ -1,20 +1,82 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import "./Components/ignoreWarnings";
+import { StyleSheet, SafeAreaView, View, Platform } from "react-native";
+import HomeScreen from "./Screens/ProductScreen";
+import "react-native-gesture-handler";
+
+import { NavigationContainer } from "@react-navigation/native";
+
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import ProductDetail from "./Screens/ProductDetail";
+import constants from "./assets/constants";
+import { Provider } from "react-redux";
+import { store } from "./Redux/combineReducer";
+import BottomNavigator from "./Navigation/HomeScreen";
+import MyDrawer from "./Navigation/MyDrawer";
+import SplashScreen from "./Screens/SplashScreen";
+import RegisterationScreen from "./Screens/RegisterationScreen";
+import LoginScreen from "./Screens/LoginScreen";
+import StoreDetailsScreen from "./Screens/StoreDetailsScreen";
+import StoreProductScreen from "./Screens/StoreProductScreen";
+import StoreHomeScreen from "./Screens/StoreHomeScreen";
+import CartScreen from "./Screens/CartScreen";
+import WorkerDetailsScreen from "./Screens/WorkerDetailsScreen";
+import LoadingScreen from "./Screens/LoadingScreen";
+import EditProfileScreen from "./Screens/EditProfileScreen";
+import EditProductScreen from "./Screens/EditProductScreen";
+import EditStoreScreen from "./Screens/EditStoreScreen";
+import Checkout from "./Screens/Checkout";
+import ProductScreen from "./Screens/ProductScreen";
 
 export default function App() {
+  const Stack = createNativeStackNavigator();
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      <SafeAreaView style={styles.container}>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Drawer" component={MyDrawer} />
+            <Stack.Screen name="HomeScreen" component={BottomNavigator} />
+            <Stack.Screen name="ProductDetail" component={ProductDetail} />
+            <Stack.Screen name="Loading" component={LoadingScreen} />
+            <Stack.Screen name="Products" component={ProductScreen} />
+
+            <Stack.Screen
+              name="Registeration"
+              component={RegisterationScreen}
+            />
+
+            {<Stack.Screen name="LoginScreen" component={LoginScreen} />}
+            <Stack.Screen
+              name="StoreDetailsScreen"
+              component={StoreDetailsScreen}
+            />
+            <Stack.Screen
+              name="StoreProductScreen"
+              component={StoreProductScreen}
+            />
+            <Stack.Screen
+              name="WorkerDetailsScreen"
+              component={WorkerDetailsScreen}
+            />
+            <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+            <Stack.Screen name="StoreHomeScreen" component={StoreHomeScreen} />
+            <Stack.Screen
+              name="EditProductScreen"
+              component={EditProductScreen}
+            />
+            <Stack.Screen name="EditStoreScreen" component={EditStoreScreen} />
+            <Stack.Screen name="Checkout" component={Checkout} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SafeAreaView>
+    </Provider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    paddingTop: Platform.OS === "ios" ? 0 : 28,
+    backgroundColor: "transparent",
   },
 });
