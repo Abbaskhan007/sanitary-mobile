@@ -23,6 +23,7 @@ import SearchBar from "../Components/SearchBar";
 import { AntDesign } from "@expo/vector-icons";
 import ProductsFilter from "../Components/ProductsFilter";
 import LoadingScreen from "./LoadingScreen";
+import ImageSearch from "../Components/ImageSearch";
 
 function ProductScreen({
   fetchProducts,
@@ -36,7 +37,6 @@ function ProductScreen({
   searchHandler,
   getWorkerCategories,
   loading,
-
 }) {
   const [search, setSearch] = useState("");
   const [categories, setCategories] = useState([]);
@@ -124,6 +124,7 @@ function ProductScreen({
           placeholder="Search Product"
           setSearch={onSearch}
         />
+       <ImageSearch/>
         <AntDesign
           onPress={() => setModalVisible(!isModalVisible)}
           name="filter"

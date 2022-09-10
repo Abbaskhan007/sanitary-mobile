@@ -13,7 +13,7 @@ export default function SellerDashboardProduct({ item }) {
       }
       style={styles.container}
     >
-      <Image style={styles.image} source={{ uri: item.images[0] }} />
+      <Image style={styles.image} source={{ uri: item.images[0].url }} />
       <View style={styles.infoContainer}>
         <Text style={styles.name}>{item.name}</Text>
         <View style={styles.ratingRow}>

@@ -26,6 +26,9 @@ import EditProductScreen from "./Screens/EditProductScreen";
 import EditStoreScreen from "./Screens/EditStoreScreen";
 import Checkout from "./Screens/Checkout";
 import ProductScreen from "./Screens/ProductScreen";
+import ShippingAddressScreen from "./Screens/ShippingAddressScreen";
+import SelectShippingAddressScreen from "./Screens/SelectShippingAddressScreen";
+import SelectPaymentMethod from "./Screens/SelectPaymentMethod";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -43,6 +46,10 @@ export default function App() {
             <Stack.Screen
               name="Registeration"
               component={RegisterationScreen}
+            />
+            <Stack.Screen
+              name="Shipping Address"
+              component={ShippingAddressScreen}
             />
 
             {<Stack.Screen name="LoginScreen" component={LoginScreen} />}
@@ -66,6 +73,14 @@ export default function App() {
             />
             <Stack.Screen name="EditStoreScreen" component={EditStoreScreen} />
             <Stack.Screen name="Checkout" component={Checkout} />
+            <Stack.Screen
+              name="SelectShippingScreen"
+              component={SelectShippingAddressScreen}
+            />
+            <Stack.Screen
+              name="SelectPaymentMethod"
+              component={SelectPaymentMethod}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaView>

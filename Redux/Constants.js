@@ -46,6 +46,9 @@ export const Filter_Products = "filter_products";
 
 export const SELLER_START = "seller_start";
 
+export const SELECT_PAYMENT_METHOD = "select_payment_method";
+export const SELECT_SHIPPING_ADDRESS = "select_shipping_address";
+
 export const LOADING_TRUE = "loading_true";
 export const LOADING_FALSE = "loading_false";
 

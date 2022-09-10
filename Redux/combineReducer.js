@@ -3,6 +3,7 @@ import thunk from "redux-thunk";
 import { cartReducer } from "./Reducer/cartReducer";
 import { categoryReducer } from "./Reducer/categoryReducer";
 import { loadingReducer } from "./Reducer/loadingReducer";
+import orderReducer from "./Reducer/orderDetailsReducer";
 import { productReducer } from "./Reducer/productReducer";
 import { sellerReducer } from "./Reducer/sellerReducer";
 import { storeReducer } from "./Reducer/storeReducer";
@@ -22,6 +23,7 @@ const reducer = combineReducers({
   workerCategories: workerCategoryReducer,
   loading: loadingReducer,
   seller: sellerReducer,
+  orderDetails: orderReducer,
 });
 
 export const store = createStore(

@@ -1,0 +1,85 @@
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import Axios from "axios";
+import constants from "../assets/constants";
+import ShippingAddressBox from "../Components/ShippingAddressBox";
+import Header from "../Components/Header";
+import { useIsFocused } from "@react-navigation/native";
+
+function SelectShippingAddressScreen({ user, navigation }) {
+  const [shippingData, setShippingData] = useState({});
+  const isFocused = useIsFocused();
+  const fetchAddresses = async () => {
+    const { data } = await Axios.get(
+      `${constants.url}/shippingAddress/${user._id}`
+    );
+    setShippingData(data);
+  };
+  useEffect(() => {
+    fetchAddresses();
+  }, [isFocused]);
+  console.log("____", shippingData);
+  return (
+    <View style={styles.container}>
+      <Header />
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("Shipping Address", { action: "new" })
+        }
+        style={styles.button}
+      >
+        <Text style={styles.buttonText}>Add Address</Text>
+      </TouchableOpacity>
+      <FlatList
+      showsVerticalScrollIndicator={false}
+        keyExtractor={item => item._id}
+        data={shippingData}
+        renderItem={({ item }) => <ShippingAddressBox address={item} />}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    padding: 12,
+  },
+  button: {
+    backgroundColor: "rgba(46, 113, 219, 0.2)",
+    borderColor: "#447fdb",
+    borderWidth: 2,
+    padding: 14,
+    borderRadius: 8,
+    borderStyle: "dotted",
+    marginVertical: 15,
+  },
+  buttonText: {
+    fontSize: 18,
+    color: "#447fdb",
+    textAlign: "center",
+    fontWeight: "500",
+  },
+});
+
+const mapStateToProps = state => {
+  return {
+    user: state.user.user,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchShippingAddress: async () => {},
+  };
+};
+
+export default connect(mapStateToProps)(SelectShippingAddressScreen);

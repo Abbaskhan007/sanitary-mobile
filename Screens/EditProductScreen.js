@@ -65,10 +65,10 @@ function EditProductScreen({
   };
 
   const onDeleteIcon = item => {
-    console.log("Images", item, images);
+    console.log("Images", item, images, cloudinaryImages);
     const updatedImages = images.filter(img => img !== item);
     const updatedCloudinaryImages = cloudinaryImages.filter(
-      img => img !== item
+      img => img.url !== item.url
     );
     setImages(updatedImages);
     setCloudinaryImage(updatedCloudinaryImages);
@@ -107,7 +107,10 @@ function EditProductScreen({
               "https://api.cloudinary.com/v1_1/dlxyvl6sb/image/upload",
               data
             );
-            return response.data.url;
+            return {
+              url: response.data.url,
+              public_id: response.data.public_id,
+            };
           })
         );
 
@@ -144,6 +147,8 @@ function EditProductScreen({
 
     setLoading(false);
   };
+
+  console.log("+================+", [...images, ...cloudinaryImages]);
 
   if (loading) {
     return <LoadingScreen />;
@@ -236,7 +241,10 @@ function EditProductScreen({
                   >
                     <AntDesign name="close" size={16} color="white" />
                   </TouchableOpacity>
-                  <Image style={styles.image} source={{ uri: item }} />
+                  <Image
+                    style={styles.image}
+                    source={{ uri: item.url ? item.url : item }}
+                  />
                 </View>
               )}
             />

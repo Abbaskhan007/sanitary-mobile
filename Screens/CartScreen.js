@@ -11,29 +11,79 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import CartItem from "../Components/CartItem";
 import Header from "../Components/Header";
+import ActivitySteps from "../Components/ActivitySteps";
 
 function CartScreen({ cart, navigation }) {
   console.log("Real Cart------------------------------------------", cart);
 
   if (cart.length > 0) {
+    const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+    const orderPrice = cart.reduce(
+      (total, item) => total + item.quantity * item.product.price,
+      0
+    );
+    const shippingCharges = cart.reduce(
+      (total, item) => total + item.product.shippingPrice,
+      0
+    );
     return (
-      <View style={{ padding: 18, flex: 1, marginBottom: 125 }}>
+      <View style={{ padding: 18, flex: 1 }}>
         <Header />
+        <ActivitySteps />
         <View style={{ flex: 1 }}>
           <FlatList
             showsVerticalScrollIndicator={false}
             keyExtractor={item => item.product._id}
             data={cart}
             renderItem={({ item }) => <CartItem item={item} />}
+            ListFooterComponent={() => (
+              <View>
+                <View style={styles.orderSummaryContainer}>
+                  <Text
+                    style={[
+                      styles.title,
+                      { textAlign: "center", marginBottom: 14 },
+                    ]}
+                  >
+                    OrderSummary
+                  </Text>
+                  <View style={styles.orderSummaryRow}>
+                    <Text style={styles.orderSummaryText}>Total Products</Text>
+                    <Text style={styles.orderSummaryText}>{cart.length}</Text>
+                  </View>
+                  <View style={styles.orderSummaryRow}>
+                    <Text style={styles.orderSummaryText}>Total Items</Text>
+                    <Text style={styles.orderSummaryText}>{totalItems}</Text>
+                  </View>
+                  <View style={styles.orderSummaryRow}>
+                    <Text style={styles.orderSummaryText}>Order Price</Text>
+                    <Text style={styles.orderSummaryText}>{orderPrice}</Text>
+                  </View>
+                  <View style={styles.orderSummaryRow}>
+                    <Text style={styles.orderSummaryText}>
+                      Shipping Charges
+                    </Text>
+                    <Text style={styles.orderSummaryText}>
+                      {shippingCharges}
+                    </Text>
+                  </View>
+                  <View style={styles.orderSummaryRow}>
+                    <Text style={styles.orderSummaryText}>Total Price</Text>
+                    <Text style={styles.orderSummaryText}>
+                      {orderPrice + shippingCharges}
+                    </Text>
+                  </View>
+                </View>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("SelectShippingScreen")}
+                  style={styles.checkoutButton}
+                >
+                  <Text style={styles.checkoutText}>Checkout</Text>
+                </TouchableOpacity>
+              </View>
+            )}
           />
         </View>
-
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Checkout")}
-          style={styles.checkoutButton}
-        >
-          <Text style={styles.checkoutText}>Checkout</Text>
-        </TouchableOpacity>
       </View>
     );
   }
@@ -62,11 +112,15 @@ function CartScreen({ cart, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, paddingBottom: 46 },
+  container: { flex: 1 },
   image: {
     width: 300,
     height: 300,
     resizeMode: "contain",
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "500",
   },
   message: {
     fontSize: 20,
@@ -92,12 +146,40 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 6,
     marginTop: 18,
+    marginBottom: 125,
   },
   checkoutText: {
     textAlign: "center",
     color: "#fff",
     fontWeight: "500",
     fontSize: 20,
+  },
+  orderSummaryContainer: {
+    backgroundColor: "#fff",
+    padding: 14,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    backgroundColor: "#fff",
+    marginVertical: 12,
+    borderRadius: 12,
+    marginTop: 24,
+  },
+  orderSummaryRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  orderSummaryText: {
+    fontSize: 16,
+    fontWeight: "500",
+    marginBottom: 6,
+    color: "#292828",
   },
 });
 

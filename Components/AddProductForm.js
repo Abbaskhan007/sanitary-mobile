@@ -94,7 +94,7 @@ function AddProductForm({
             "image",
             image
           );
-          return response.data.url;
+          return { url: response.data.url, public_id: response.data.public_id };
         })
       );
       console.log("Cloudinary Images", cloudinaryImages);
@@ -135,7 +135,7 @@ function AddProductForm({
     setImages(updatedImages);
   };
 
-  console.log("Items", items);
+  console.log("Items?????????????????", items);
 
   return (
     <View style={styles.centeredView}>

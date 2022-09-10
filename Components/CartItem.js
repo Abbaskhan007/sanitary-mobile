@@ -69,7 +69,7 @@ function CartItem({
       <Image
         style={styles.image}
         source={{
-          uri: "https://res.cloudinary.com/dlxyvl6sb/image/upload/v1658143233/tkk8whmnpvs5efnwamms.png",
+          uri: item.product?.images[0].url,
         }}
       />
       <View style={styles.infoContainer}>

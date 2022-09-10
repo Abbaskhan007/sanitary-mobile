@@ -1,75 +1,220 @@
-import { View, Text, Alert, Button } from "react-native";
+import { View, Text, Alert, StyleSheet, Image, ScrollView } from "react-native";
 import React, { useState, useEffect } from "react";
-import { StripeProvider, useStripe } from "@stripe/stripe-react-native";
-
-import Axios from "axios";
-import constants from "../assets/constants";
+import CardPayment from "../Components/CardPayment";
+import { connect } from "react-redux";
 import Header from "../Components/Header";
 
-export default function Checkout() {
-  const [publishableKey, setPublishableKey] = useState("");
-  const stripe = useStripe();
+function Checkout({ cart, paymentMethod, shippingAddress }) {
+  console.log("Props_:", cart, paymentMethod, shippingAddress);
 
-  const fetchPublishableKey = async () => {
-    try {
-      const response = await Axios.get(`${constants.url}/config`);
-      setPublishableKey(response.data.publishableKey);
-    } catch (e) {
-      console.log(e);
-      console.warn("Unable to fetch publishable key. Is your server running");
-      Alert.alert(
-        "Error",
-        "Unable to fetch publishable key. Is you server running"
-      );
-    }
-  };
+  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+  const orderPrice = cart.reduce(
+    (total, item) => total + item.quantity * item.product.price,
+    0
+  );
+  const shippingCharges = cart.reduce(
+    (total, item) => total + item.product.shippingPrice,
+    0
+  );
 
-  const handlePayment = async () => {
-    try {
-      const { data } = await Axios.post(`${constants.url}/pay`, {
-        amount: 400,
-        name: "khan",
-        orderId: "007",
-      });
-      console.log("Response of Stripe", data);
-      const initSheet = await stripe.initPaymentSheet({
-        paymentIntentClientSecret: data.clientSecret,
-      });
-      if (initSheet.error) {
-        return Alert.alert(
-          "Error in initiating payment sheet: ",
-          initSheet.error.message
-        );
-      }
-      const presentSheet = await stripe.presentPaymentSheet({
-        clientSecret: data.clientSecret,
-      });
-      if (presentSheet.error)
-        return Alert.alert(
-          "Error in present payment Sheet: ",
-          presentSheet.error.message
-        );
-      Alert.alert(
-        "Order Completed",
-        "Thank you for paying. Your Order is on the way"
-      );
-    } catch (error) {
-      console.log("Error", error);
-      Alert.alert(error.message);
-    }
-  };
-
-  useEffect(() => {
-    fetchPublishableKey();
-  }, []);
+  
 
   return (
-    <StripeProvider
-      publishableKey={publishableKey}
-      merchantIdentifier="merchant.identifier"
-    >
+    <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
       <Header />
-      <Button title="Pay" onPress={handlePayment} />
-    </StripeProvider>
+      <View style={styles.paymentRow}>
+        <Text style={styles.title}>Payment Method </Text>
+        <Text style={styles.title}>{paymentMethod}</Text>
+      </View>
+      <View style={styles.shippingRow}>
+        <Text style={styles.title}>Shipping Address </Text>
+        <View style={styles.addressRow}>
+          <Text style={styles.address}>
+            {shippingAddress.address}, {shippingAddress.area},
+            {shippingAddress.city}, {shippingAddress.province}
+          </Text>
+        </View>
+      </View>
+      <View style={styles.orders}>
+        <Text style={styles.title}>Order Items</Text>
+        {cart.map(item => (
+          <>
+            <View style={styles.orderContainer}>
+              <Image
+                style={styles.orderImage}
+                source={{ uri: item.product.images[0].url }}
+              />
+              <Text style={styles.orderName}>{item.product.name}</Text>
+              <Text style={styles.price}>
+                {item.product.price} x {item.quantity} = Rs.{" "}
+                {item.product.price * item.quantity}
+              </Text>
+            </View>
+            <View style={styles.line} />
+          </>
+        ))}
+      </View>
+      <View style={styles.orderSummaryContainer}>
+        <Text style={[styles.title, { textAlign: "center", marginBottom: 14 }]}>
+          OrderSummary
+        </Text>
+        <View style={styles.orderSummaryRow}>
+          <Text style={styles.orderSummaryText}>Total Products</Text>
+          <Text style={styles.orderSummaryText}>{cart.length}</Text>
+        </View>
+        <View style={styles.orderSummaryRow}>
+          <Text style={styles.orderSummaryText}>Total Items</Text>
+          <Text style={styles.orderSummaryText}>{totalItems}</Text>
+        </View>
+        <View style={styles.orderSummaryRow}>
+          <Text style={styles.orderSummaryText}>Order Price</Text>
+          <Text style={styles.orderSummaryText}>{orderPrice}</Text>
+        </View>
+        <View style={styles.orderSummaryRow}>
+          <Text style={styles.orderSummaryText}>Shipping Charges</Text>
+          <Text style={styles.orderSummaryText}>{shippingCharges}</Text>
+        </View>
+        <View style={styles.orderSummaryRow}>
+          <Text style={styles.orderSummaryText}>Total Price</Text>
+          <Text style={styles.orderSummaryText}>
+            {orderPrice + shippingCharges}
+          </Text>
+        </View>
+      </View>
+      <CardPayment />
+    </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 12,
+  },
+  paymentRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    backgroundColor: "#fff",
+    padding: 14,
+    marginVertical: 12,
+    borderRadius: 8,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "500",
+  },
+  shippingRow: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    backgroundColor: "#fff",
+    padding: 14,
+    marginVertical: 12,
+    borderRadius: 8,
+  },
+  addressRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 6,
+  },
+  address: {
+    fontSize: 15,
+    lineHeight: 20,
+  },
+  orders: {
+    backgroundColor: "#fff",
+    padding: 14,
+    borderRadius: 12,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    backgroundColor: "#fff",
+    padding: 14,
+    marginVertical: 12,
+  },
+  orderContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 22,
+  },
+  orderImage: {
+    width: 90,
+    height: 90,
+    borderRadius: 8,
+  },
+  line: {
+    backgroundColor: "#dedede",
+    width: "75%",
+    height: 1,
+    alignSelf: "center",
+  },
+  orderName: {
+    fontSize: 18,
+    fontWeight: "500",
+    marginHorizontal: 16,
+    flex: 1,
+    color: "#292828",
+  },
+  price: {
+    fontSize: 15,
+    fontWeight: "500",
+    color: "gray",
+  },
+
+  orderSummaryContainer: {
+    backgroundColor: "#fff",
+    padding: 14,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    backgroundColor: "#fff",
+    marginVertical: 12,
+    borderRadius: 12,
+  },
+  orderSummaryRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  orderSummaryText: {
+    fontSize: 16,
+    fontWeight: "500",
+    marginBottom: 6,
+    color: "#292828",
+  },
+});
+
+const mapStateToProps = state => {
+  return {
+    cart: state.cart.cart,
+    paymentMethod: state.orderDetails.paymentMethod,
+    shippingAddress: state.orderDetails.shippingAddress,
+  };
+};
+
+const mapDispatchToProps = () => {};
+
+export default connect(mapStateToProps)(Checkout);

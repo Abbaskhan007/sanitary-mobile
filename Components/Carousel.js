@@ -8,13 +8,9 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 
-export default function Carousel() {
+export default function Carousel({ images }) {
+  console.log("Images-----", images);
   const [active, setActive] = useState(0);
-  const images = [
-    "https://res.cloudinary.com/dlxyvl6sb/image/upload/v1658602725/2a42f9c30a973691017db37c891fa9a8-removebg-preview_fxr1zp.png",
-    "https://res.cloudinary.com/dlxyvl6sb/image/upload/v1658143233/tkk8whmnpvs5efnwamms.png",
-    "https://res.cloudinary.com/dlxyvl6sb/image/upload/v1658602725/2a42f9c30a973691017db37c891fa9a8-removebg-preview_fxr1zp.png",
-  ];
 
   const scrollX = new Animated.Value(0);
 
@@ -37,16 +33,16 @@ export default function Carousel() {
           { useNativeDriver: false }
         )}
       >
-        {images.map((item, index) => {
+        {images?.map((item, index) => {
           return (
             <View key={item.image} style={styles.container}>
-              <Image style={styles.image} source={{ uri: item }} />
+              <Image style={styles.image} source={{ uri: item.url }} />
             </View>
           );
         })}
       </Animated.ScrollView>
       <View style={styles.dotRow}>
-        {images.map((item, num) => {
+        {images?.map((item, num) => {
           const opacity = dotPosition.interpolate({
             inputRange: [num - 1, num, num + 1],
             outputRange: [0.3, 1, 0.3],

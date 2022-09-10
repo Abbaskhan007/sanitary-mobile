@@ -22,6 +22,8 @@ import {
 function ProductCard({ item, seller, fetchProducts }) {
   const navigation = useNavigation();
 
+  console.log("Item", item);
+
   const onDeleteProduct = async e => {
     e.stopPropagation();
     try {
@@ -37,7 +39,7 @@ function ProductCard({ item, seller, fetchProducts }) {
     }
   };
 
-  const onEditProduct = e => {};
+  console.log("Item *******************", item);
 
   return (
     <TouchableOpacity
@@ -63,7 +65,7 @@ function ProductCard({ item, seller, fetchProducts }) {
         </View>
       )}
       <View style={styles.imageContainer}>
-        <Image style={styles.image} source={{ uri: item.images[0] }} />
+        <Image style={styles.image} source={{ uri: item?.images[0].url }} />
       </View>
       <View style={styles.infoContainer}>
         <Text style={styles.name}>{item.name}</Text>
@@ -71,7 +73,9 @@ function ProductCard({ item, seller, fetchProducts }) {
           <Text style={styles.detail}>by</Text>
           <Text style={[styles.detail, styles.storeName]}>Abbas</Text>
         </View>
-        <Text numberOfLines={2} style={styles.description}>{item.description}</Text>
+        <Text numberOfLines={2} style={styles.description}>
+          {item.description}
+        </Text>
 
         <View style={styles.lastRow}>
           <View>
