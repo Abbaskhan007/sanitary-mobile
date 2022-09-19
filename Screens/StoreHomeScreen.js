@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import StarRating from "../Components/StarRating";
 import moment from "moment";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
@@ -21,8 +21,22 @@ import {
   STORE_FETCH_SUCCESS,
 } from "../Redux/Constants";
 import { useNavigation } from "@react-navigation/native";
+import ReviewBox from "../Components/ReviewBox";
 
 function StoreHomeScreen({ store, fetchStoreData, seller }) {
+  const [reviews, setReviews] = useState([]);
+  const fetchReviews = async () => {
+    const { data } = await Axios.post(`${constants.url}/orders/getReviews`, {
+      storeId: store._id,
+    });
+    console.log("data of reviews *************************-------------", data);
+    setReviews(data);
+  };
+
+  useEffect(() => {
+    fetchReviews();
+  }, []);
+
   const boxesData = [
     {
       title: "Rating",
@@ -32,8 +46,6 @@ function StoreHomeScreen({ store, fetchStoreData, seller }) {
     { title: "Cancelled", data: store.orderCancelled },
     { title: "Joined", data: moment(store.createdAt).fromNow() },
   ];
-
-  console.log("Store---------------------------", store);
 
   const navigation = useNavigation();
 
@@ -117,9 +129,30 @@ function StoreHomeScreen({ store, fetchStoreData, seller }) {
           />
           <Text style={styles.sellerName}>{"Abbas"}</Text>
         </View>
-        <Text style={styles.categoryText}>Seller Description:</Text>
+
         <Text style={styles.description}>{store?.seller?.description}</Text>
       </View>
+      <Text
+        style={[
+          styles.categoryText,
+          { textAlign: "center", marginVertical: 18 },
+        ]}
+      >
+        Rating and Review
+      </Text>
+      <FlatList
+        data={reviews}
+        keyExtractor={item => item._id}
+        renderItem={({ item }) => (
+          <ReviewBox
+            photo={item.customerId.profileImage}
+            review={item.review}
+            rating={item.rating}
+            createdAt={item.createdAt}
+            name={item.customerId.name}
+          />
+        )}
+      />
     </View>
   );
 }
@@ -128,6 +161,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 12,
+    paddingBottom: 42,
   },
   nameRow: {
     flexDirection: "row",
@@ -212,6 +246,7 @@ const styles = StyleSheet.create({
   sellerRow: {
     flexDirection: "row",
     alignItems: "center",
+    marginBottom: 6,
   },
   boxContainer: {
     flexDirection: "row",

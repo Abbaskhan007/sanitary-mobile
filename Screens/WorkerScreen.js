@@ -14,6 +14,7 @@ import SearchBar from "../Components/SearchBar";
 import { AntDesign } from "@expo/vector-icons";
 import WorkerFilter from "../Components/WorkerFilter";
 import workerDropDown from "../Components/workerDropDown";
+import BottomSpace from "../Components/BottomSpace";
 
 function WorkerScreen({ categories, worker, fetchWorkers, filterWorkers }) {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -53,7 +54,6 @@ function WorkerScreen({ categories, worker, fetchWorkers, filterWorkers }) {
             selectText="Select Worker"
             searchInputPlaceholderText="Enter Worker Categories"
             onChangeInput={text => console.log(text)}
-            altFontFamily="ProximaNova-Light"
             tagRemoveIconColor="#CCC"
             tagBorderColor="#CCC"
             tagTextColor="#CCC"
@@ -116,6 +116,7 @@ function WorkerScreen({ categories, worker, fetchWorkers, filterWorkers }) {
         renderItem={({ item }) => <WorkerCard item={item} />}
         showsVerticalScrollIndicator={false}
         ItemSeparatorComponent={() => <View style={styles.seperator}></View>}
+        ListFooterComponent={<BottomSpace />}
       />
     </View>
   );
@@ -126,6 +127,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
     backgroundColor: constants.bgColor,
+    paddingTop: constants.paddingTop,
   },
 
   seperator: {

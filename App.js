@@ -1,5 +1,12 @@
+import React, { useEffect } from "react";
 import "./Components/ignoreWarnings";
-import { StyleSheet, SafeAreaView, View, Platform } from "react-native";
+import {
+  StyleSheet,
+  SafeAreaView,
+  View,
+  Platform,
+  StatusBar,
+} from "react-native";
 import HomeScreen from "./Screens/ProductScreen";
 import "react-native-gesture-handler";
 
@@ -29,14 +36,24 @@ import ProductScreen from "./Screens/ProductScreen";
 import ShippingAddressScreen from "./Screens/ShippingAddressScreen";
 import SelectShippingAddressScreen from "./Screens/SelectShippingAddressScreen";
 import SelectPaymentMethod from "./Screens/SelectPaymentMethod";
+import Reviews from "./Screens/Reviews";
+import OrdersScreen from "./Screens/OrdersScreen";
+import OrderDetailScreen from "./Screens/OrderDetailScreen";
+import ARView from "./Screens/ARView";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
+
   return (
     <Provider store={store}>
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
+        <StatusBar backgroundColor="transparent" translucent={true} />
         <NavigationContainer>
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
             <Stack.Screen name="Drawer" component={MyDrawer} />
             <Stack.Screen name="HomeScreen" component={BottomNavigator} />
             <Stack.Screen name="ProductDetail" component={ProductDetail} />
@@ -81,9 +98,13 @@ export default function App() {
               name="SelectPaymentMethod"
               component={SelectPaymentMethod}
             />
+            <Stack.Screen name="Reviews" component={Reviews} />
+            <Stack.Screen name="Orders" component={OrdersScreen} />
+            <Stack.Screen name="OrderDetail" component={OrderDetailScreen} />
+            <Stack.Screen name="ARView" component={ARView} />
           </Stack.Navigator>
         </NavigationContainer>
-      </SafeAreaView>
+      </View>
     </Provider>
   );
 }
@@ -91,7 +112,5 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: Platform.OS === "ios" ? 0 : 28,
-    backgroundColor: "transparent",
   },
 });

@@ -30,13 +30,13 @@ function TabButton(props) {
     if (focused) {
       viewRef.current.animate({
         0: { scale: 0.5, translateY: 8 },
-        1: { scale: 1.2, translateY: -24 },
+        1: { scale: 1.2, translateY: -20 },
       });
       circleRef.current.animate(circleFocused);
       textRef.current.transitionTo({ scale: 1 });
     } else {
       viewRef.current.animate({
-        0: { scale: 1.2, translateY: -24 },
+        0: { scale: 1.2, translateY: -20 },
         0.92: { translateY: -34 },
         1: { scale: 1, translateY: 8 },
       });
@@ -99,11 +99,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 22,
+    
   },
   btn: {
     backgroundColor: "#fff",
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 25,
@@ -114,10 +116,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     backgroundColor: "red",
 
-    width: 26,
-    height: 26,
+    width: 24,
+    height: 24,
     borderRadius: 13,
-    top: -12,
+    top: -16,
     right: -12,
     alignItems: "center",
     justifyContent: "center",

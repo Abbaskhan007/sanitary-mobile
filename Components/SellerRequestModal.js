@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { AntDesign } from "@expo/vector-icons";
@@ -97,7 +98,6 @@ function SellerRequestModal({
                 selectText="Select Worker"
                 searchInputPlaceholderText="Enter Worker Categories"
                 onChangeInput={text => console.log(text)}
-                altFontFamily="ProximaNova-Light"
                 tagRemoveIconColor="#CCC"
                 tagBorderColor="#CCC"
                 tagTextColor="#CCC"
@@ -183,7 +183,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
     backgroundColor: "rgba(8,8,8, 0.4)",
   },
   modalView: {

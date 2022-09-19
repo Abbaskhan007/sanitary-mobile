@@ -12,6 +12,7 @@ import StoreCard from "../Components/StoreCard";
 import StoreCategories from "../Components/StoreCategories";
 import { AntDesign } from "@expo/vector-icons";
 import SearchBar from "../Components/SearchBar";
+import BottomSpace from "../Components/BottomSpace";
 
 function StoreScreen({ fetchStoreData, store, filterStore }) {
   const [category, setCategory] = useState([]);
@@ -41,15 +42,15 @@ function StoreScreen({ fetchStoreData, store, filterStore }) {
           setSearch={onSearch}
           placeholder="Search Store"
         />
-       
       </View>
       <StoreCategories search={search} />
       <FlatList
-      showsVerticalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
         data={store.data}
         keyExtractor={item => item._id}
         renderItem={({ item }) => <StoreCard item={item} />}
         ItemSeparatorComponent={() => <View style={styles.seperator} />}
+        ListFooterComponent={<BottomSpace />}
       />
     </View>
   );
@@ -60,6 +61,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: constants.bgColor,
     padding: 24,
+    paddingTop: constants.paddingTop,
   },
   seperator: {
     height: 14,

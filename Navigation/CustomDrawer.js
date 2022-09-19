@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Pressable,
+  Platform,
+} from "react-native";
 import React from "react";
 import {
   DrawerContentScrollView,
@@ -82,14 +89,15 @@ function CustomDrawer(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: "#edeceb",
+    //backgroundColor: "#edeceb",
   },
   bg: {
     backgroundColor: "#818cf8",
-    height: 200,
+    height: 225,
     flexDirection: "row",
-
     justifyContent: "space-between",
+    marginTop: -52,
+    paddingTop: 35,
   },
   userInfo: {
     alignItems: "center",
@@ -101,13 +109,13 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 3,
+      height: 5,
     },
-    shadowOpacity: 0.29,
+    shadowOpacity: 0.39,
     shadowRadius: 4.65,
 
     elevation: 7,
-    marginTop: -130,
+    marginTop: -110,
     marginBottom: 24,
   },
   image: {
@@ -129,12 +137,12 @@ const styles = StyleSheet.create({
   rowText: {
     color: "gray",
     fontSize: 15,
-
     marginLeft: 4,
   },
   logoutRow: {
     flexDirection: "row",
     margin: 14,
+    marginBottom: Platform.OS === "ios" ? 32 : 20,
   },
   logoutText: {
     color: "#818cf8",

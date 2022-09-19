@@ -89,6 +89,7 @@ function Checkout({ cart, paymentMethod, shippingAddress }) {
 const styles = StyleSheet.create({
   container: {
     padding: 12,
+    paddingVertical: 16
   },
   paymentRow: {
     flexDirection: "row",

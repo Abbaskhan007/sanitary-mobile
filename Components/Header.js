@@ -5,10 +5,13 @@ import BackButton from "./BackButton";
 
 export default function Header({ Left, Right, color = "#000" }) {
   const route = useRoute();
+  console.log("Route", route.name);
   return (
     <View style={styles.container}>
       <BackButton color={color} />
-      <Text style={[styles.title, { color }]}>{route.name}</Text>
+      <Text style={[styles.title, !Right && { marginLeft: -52 }, { color }]}>
+        {route.name}
+      </Text>
       {Right && <Right />}
     </View>
   );
@@ -18,13 +21,13 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
+    paddingTop: 18,
   },
   title: {
-    flex: 1,
     textAlign: "center",
     fontSize: 20,
     fontWeight: "400",
-    marginLeft: -52,
-    fontFamily: "lato",
+
+    flex: 1,
   },
 });

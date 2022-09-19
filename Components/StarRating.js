@@ -11,7 +11,7 @@ export default function StarRating({ rating, color = "#6365f1" }) {
     );
   } else if (rating >= 1 && rating < 1.5) {
     return (
-      <View>
+      <View style={styles.container}>
         <FontAwesome name="star" size={18} color={color} />
         <Feather name="star" size={18} color={color} />
         <Feather name="star" size={18} color={color} />
@@ -96,7 +96,7 @@ export default function StarRating({ rating, color = "#6365f1" }) {
         <FontAwesome name="star" size={18} color={color} />
         <FontAwesome name="star" size={18} color={color} />
         <FontAwesome name="star" size={18} color={color} />
-        <FontAwesome name="star" size={18} color={color} />{" "}
+        <FontAwesome name="star" size={18} color={color} />
         <FontAwesome name="star" size={18} color={color} />
       </View>
     );

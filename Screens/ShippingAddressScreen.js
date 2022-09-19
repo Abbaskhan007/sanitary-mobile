@@ -230,6 +230,8 @@ const mapStateToProps = state => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 16,
+    paddingBottom: 12
   },
   form: {
     padding: 14,

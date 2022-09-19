@@ -14,6 +14,7 @@ import StoreProductScreen from "./StoreProductScreen";
 import BackButton from "../Components/BackButton";
 import StarRating from "../Components/StarRating";
 import moment from "moment";
+import Header from "../Components/Header";
 
 export default function WorkerDetailsScreen({ route }) {
   const [workerData, setWorkerData] = useState(false);
@@ -48,8 +49,8 @@ export default function WorkerDetailsScreen({ route }) {
     ];
     return (
       <ScrollView style={styles.container}>
-        <View style={{ position: "absolute", top: 0, zIndex: 20 }}>
-          <BackButton />
+        <View style={{ position: "absolute", top: 10, zIndex: 20 }}>
+          <Header />
         </View>
 
         <Image
@@ -95,6 +96,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+   
+ 
   },
   bannerImage: {
     width: 500,

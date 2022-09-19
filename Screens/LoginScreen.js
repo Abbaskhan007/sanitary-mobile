@@ -62,7 +62,10 @@ function LoginScreen({ navigation, route, loginAction, user, cart }) {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardShouldPersistTaps="handled"
     >
-      <BackButton bg="#fff" color="gray" />
+      <View style={{ marginTop: 32, zIndex: 8, marginHorizontal: 8 }}>
+        <BackButton  color="black" />
+      </View>
+
       <View style={styles.imageContainer}>
         <View style={styles.circle1}></View>
         <View style={styles.circle2}></View>

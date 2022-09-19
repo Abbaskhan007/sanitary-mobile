@@ -54,9 +54,17 @@ function WorkerRequestModal({
       const data = new FormData();
       data.append("file", imageData);
       data.append("upload_preset", "sanitary");
+      data.append("workers", "products");
+
       const response = await Axios.post(
         "https://api.cloudinary.com/v1_1/dlxyvl6sb/image/upload",
-        data
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Accept: "application/json",
+          },
+        }
       );
 
       setImages([...images, response.data.url]);
@@ -182,7 +190,6 @@ function WorkerRequestModal({
                     selectText="Select Worker"
                     searchInputPlaceholderText="Enter Worker Categories"
                     onChangeInput={text => console.log(text)}
-                    altFontFamily="ProximaNova-Light"
                     tagRemoveIconColor="#CCC"
                     tagBorderColor="#CCC"
                     tagTextColor="#CCC"

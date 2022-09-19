@@ -47,7 +47,6 @@ function EditProductScreen({
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState(product.category);
-  const [newImages, setNewImages] = useState([]);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -73,6 +72,8 @@ function EditProductScreen({
     setImages(updatedImages);
     setCloudinaryImage(updatedCloudinaryImages);
   };
+
+  console.log("Items:", items);
 
   const onSave = async () => {
     setLoading(true);
@@ -102,10 +103,17 @@ function EditProductScreen({
             data.append("file", imageData);
             data.append("upload_preset", "sanitary");
             data.append("cloud_name", "dlxyvl6sb");
+            data.append("folder", "products");
 
             const response = await Axios.post(
               "https://api.cloudinary.com/v1_1/dlxyvl6sb/image/upload",
-              data
+              data,
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                  Accept: "application/json",
+                },
+              }
             );
             return {
               url: response.data.url,
@@ -303,6 +311,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
+    paddingTop: 16,
+    paddingBottom: 32,
   },
   form: { width: "90%", marginTop: 32 },
   title: {

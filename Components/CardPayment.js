@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
     padding: 12,
     margin: 14,
     borderRadius: 8,
+    marginBottom: 42
   },
   buttonText: {
     textAlign: "center",

@@ -13,6 +13,8 @@ import StoreHomeScreen from "./StoreHomeScreen";
 import StoreProductScreen from "./StoreProductScreen";
 import BackButton from "../Components/BackButton";
 import { connect } from "react-redux";
+import Header from "../Components/Header";
+import StarRating from "../Components/StarRating";
 
 function StoreDetailsScreen({ route, store }) {
   const [storeData, setStoreData] = useState({});
@@ -23,11 +25,9 @@ function StoreDetailsScreen({ route, store }) {
     const { data } = await Axios.get(
       `${constants.url}/stores/getStore/${storeId}`
     );
-    console.log("Store Data_________________________", data);
+    // console.log("Store Data_________________________", data);
     setStoreData(data);
   };
-
-  console.log("Route Name", route.name);
 
   useEffect(() => {
     getStoreData();
@@ -44,8 +44,10 @@ function StoreDetailsScreen({ route, store }) {
 
   return (
     <ScrollView style={styles.container}>
-      <View style={{ position: "absolute", top: 0, zIndex: 20 }}>
-        <BackButton />
+      <View
+        style={{ position: "absolute", top: 0, zIndex: 30, paddingTop: 12 }}
+      >
+        <Header />
       </View>
 
       <Image style={styles.bannerImage} source={{ uri: storeData.image }} />
@@ -77,6 +79,7 @@ function StoreDetailsScreen({ route, store }) {
           <StoreProductScreen store={storeData} />
         )}
       </View>
+      
     </ScrollView>
   );
 }

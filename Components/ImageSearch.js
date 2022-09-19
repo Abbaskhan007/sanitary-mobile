@@ -1,11 +1,12 @@
 import { View, Text, Touchable, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import Axios from "axios";
 import { connect } from "react-redux";
 import { PRODUCT_SEARCH } from "../Redux/Constants";
 import constants from "../assets/constants";
+import mime from "mime";
 
 function ImageSearch({ fetchProducts }) {
   const pickImage = async () => {
@@ -17,19 +18,34 @@ function ImageSearch({ fetchProducts }) {
     });
 
     if (!result.cancelled) {
-      let imageData = {
-        uri: result.uri,
-        type: `image/jpg`,
-        name: `test.jpg`,
-      };
-      console.log("ImageData----", imageData);
+      const newImageUri = "file:///" + result.uri.split("file:/").join("");
+      const formData = new FormData();
+      formData.append("image", {
+        uri: newImageUri,
+        type: mime.getType(newImageUri),
+        name: newImageUri.split("/").pop(),
+      });
+      // let imageData = {
+      //   uri: result.uri,
+      //   type: `image/jpg`,
+      //   name: `test.jpg`,
+      // };
+      //console.log("ImageData----", imageData);
       try {
-        const data = new FormData();
-        data.append("file", imageData);
+        // const data = new FormData();
+        // data.append("file", imageData);
+        console.log("________________________ form Data:", formData);
         const response = await Axios.post(
-          "http://127.0.0.1:4000/flaskSearchImage",
-          data
+          "http://192.168.0.112:4000/flaskSearchImage",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Accept: "application/json",
+            },
+          }
         );
+
         console.log("Response ------", response.data);
         const public_ids = Object.values(response.data).map(
           item => item.split("/")[1].split(".")[0]
@@ -40,7 +56,7 @@ function ImageSearch({ fetchProducts }) {
           public_ids
         );
 
-        console.log("Product Data after image search: ", productData);
+        console.log("Product Data after image search: ", productData.data);
         fetchProducts(productData.data);
       } catch (err) {
         console.log("Error: ", err);

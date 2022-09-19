@@ -1,9 +1,8 @@
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import Header from "../Components/Header";
 import { connect } from "react-redux";
 import { SELECT_PAYMENT_METHOD } from "../Redux/Constants";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 function SelectPaymentMethod({ selectPaymentMethod, navigation }) {
   const onPaymentSelect = paymentMethod => {
@@ -11,7 +10,7 @@ function SelectPaymentMethod({ selectPaymentMethod, navigation }) {
     navigation.navigate("Checkout");
   };
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, paddingTop: 16 }}>
       <Header />
       <View style={styles.container}>
         <Text style={styles.heading}>Debit Card</Text>
@@ -42,6 +41,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 12,
     justifyContent: "center",
+  
   },
   image: {
     width: "100%",

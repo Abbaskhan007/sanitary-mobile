@@ -22,7 +22,7 @@ import {
 function ProductCard({ item, seller, fetchProducts }) {
   const navigation = useNavigation();
 
-  console.log("Item", item);
+
 
   const onDeleteProduct = async e => {
     e.stopPropagation();
@@ -39,7 +39,6 @@ function ProductCard({ item, seller, fetchProducts }) {
     }
   };
 
-  console.log("Item *******************", item);
 
   return (
     <TouchableOpacity

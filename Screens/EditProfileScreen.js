@@ -38,8 +38,6 @@ function EditProfileScreen({ user, updateProfile }) {
   const imageRef = useRef(null);
   const [loading, setLoading] = useState(false);
 
- 
-
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -61,9 +59,17 @@ function EditProfileScreen({ user, updateProfile }) {
       const data = new FormData();
       data.append("file", imageData);
       data.append("upload_preset", "sanitary");
+      data.append("folder", "users");
+
       const response = await Axios.post(
         "https://api.cloudinary.com/v1_1/dlxyvl6sb/image/upload",
-        data
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Accept: "application/json",
+          },
+        }
       );
       setProfileImage(response.data.url);
 
@@ -194,6 +200,7 @@ function EditProfileScreen({ user, updateProfile }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 16
   },
   form: {
     alignItems: "center",

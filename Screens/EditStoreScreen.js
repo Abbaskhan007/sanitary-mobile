@@ -74,9 +74,17 @@ function EditStoreScreen({
         const form = new FormData();
         form.append("file", imageData);
         form.append("upload_preset", "sanitary");
+        data.append("folder", "stores");
+
         const cloudinayResponse = await Axios.post(
           "https://api.cloudinary.com/v1_1/dlxyvl6sb/image/upload",
-          form
+          form,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Accept: "application/json",
+            },
+          }
         );
         const data = {
           ...store,
@@ -148,7 +156,6 @@ function EditStoreScreen({
               selectText="Select Worker"
               searchInputPlaceholderText="Enter Worker Categories"
               onChangeInput={text => console.log(text)}
-              altFontFamily="ProximaNova-Light"
               tagRemoveIconColor="#CCC"
               tagBorderColor="#CCC"
               tagTextColor="#CCC"
@@ -223,6 +230,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    paddingTop: 16
   },
   form: {
     width: "90%",

@@ -13,7 +13,7 @@ import {
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import LoadingIndicator from "./LoadingIndicator";
 import * as ImagePicker from "expo-image-picker";
 import constants from "../assets/constants";
@@ -41,10 +41,11 @@ function AddProductForm({
   const [shippingPrice, setShippingPrice] = useState(0);
   const [images, setImages] = useState("");
 
-  const [category, setCategory] = useState([]);
+  const [category, setCategory] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [items, setItems] = useState("");
+  const [model, setModel] = useState(null);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -54,12 +55,24 @@ function AddProductForm({
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       setImages([...images, result.uri]);
     }
   };
+
+  // const pickModel = async () => {
+  //   let result = await ImagePicker.launchImageLibraryAsync({
+  //     mediaTypes: ImagePicker.MediaTypeOptions.All,
+  //     allowsEditing: true,
+  //     aspect: [4, 3],
+  //     quality: 1,
+  //   });
+
+  //   console.log("Result------ of model", result);
+  //   if (!result.cancelled) {
+  //     setModel(result.uri);
+  //   }
+  // };
 
   const onSubmit = async () => {
     setLoading(true);
@@ -70,10 +83,21 @@ function AddProductForm({
       !price ||
       !inStock ||
       !name ||
-      !shippingPrice
+      !shippingPrice ||
+      !model
     ) {
       setError("Please Enter all the fields");
     } else {
+      if (model.split(".")[model.split(".").length - 1] !== "glb") {
+        console.log(
+          "-=-===-=-=-=-=-",
+          model.split("."),
+          model.split(".")[model.split.length - 1]
+        );
+        Alert.alert("3D Model file should be in .glb format");
+        setLoading(false);
+        return;
+      }
       const cloudinaryImages = await Promise.all(
         images.map(async image => {
           let imageData = {
@@ -84,9 +108,17 @@ function AddProductForm({
           const data = new FormData();
           data.append("file", imageData);
           data.append("upload_preset", "sanitary");
+          data.append("folder", "products");
+
           const response = await Axios.post(
             "https://api.cloudinary.com/v1_1/dlxyvl6sb/image/upload",
-            data
+            data,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+                Accept: "application/json",
+              },
+            }
           );
           console.log(
             "Response of single Cloudinary",
@@ -94,11 +126,13 @@ function AddProductForm({
             "image",
             image
           );
-          return { url: response.data.url, public_id: response.data.public_id };
+          return {
+            url: response.data.url,
+            public_id: response.data.public_id,
+          };
         })
       );
       console.log("Cloudinary Images", cloudinaryImages);
-
       const data = {
         name,
         images: cloudinaryImages,
@@ -109,6 +143,7 @@ function AddProductForm({
         category: items,
         seller,
         store: storeId,
+        model
       };
 
       try {
@@ -122,6 +157,8 @@ function AddProductForm({
         setModalVisible(false);
         navigation.navigate("Seller Dashboard");
       } catch (err) {
+        setLoading(false);
+        console.log("4----------------", err);
         Alert.alert(`Add Product Failed: ${err}`);
       }
     }
@@ -134,8 +171,6 @@ function AddProductForm({
     // console.log("Item", item, updatedImages);
     setImages(updatedImages);
   };
-
-  console.log("Items?????????????????", items);
 
   return (
     <View style={styles.centeredView}>
@@ -235,12 +270,34 @@ function AddProductForm({
                     }}
                   />
                 </View>
+                <Text style={[styles.heading, { marginTop: 14 }]}>
+                  Add Image
+                </Text>
                 <TouchableOpacity
                   onPress={pickImage}
                   style={styles.cameraIconContainer}
                 >
                   <Ionicons name="camera-outline" size={64} color="#d4d4d4" />
                 </TouchableOpacity>
+                <Text style={styles.heading}>3D Model URL</Text>
+                <TextInput
+                  style={styles.textField}
+                  placeholder="Enter 3D Model URL in GLB"
+                  onChangeText={setModel}
+                  value={model}
+                />
+                {/* <View style={styles.modelField}>
+                  <TouchableOpacity
+                    onPress={pickModel}
+                    style={styles.modelButton}
+                  >
+                    <Feather name="codesandbox" size={24} color="#fff" />
+                    <Text style={styles.modelButtonText}>Select 3D Model</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.modelFileText} numberOfLines={1}>
+                    {model ? model : "Not Selected (GLP)"}
+                  </Text>
+                </View> */}
                 <View>
                   <FlatList
                     horizontal
@@ -302,7 +359,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    width: "90%",
+    width: "94%",
     maxHeight: 550,
   },
   title: {
@@ -340,7 +397,7 @@ const styles = StyleSheet.create({
     width: "100%",
     borderWidth: 2,
     borderColor: "#d1d5db",
-    paddingVertical: 6,
+    paddingVertical: 8,
     borderRadius: 6,
     marginTop: 5,
     marginBottom: 15,
@@ -400,6 +457,30 @@ const styles = StyleSheet.create({
     padding: 4,
     borderRadius: 22,
     zIndex: 50,
+  },
+  modelField: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 12,
+    marginBottom: 8,
+  },
+  modelButton: {
+    flexDirection: "row",
+    marginRight: 12,
+    padding: 11,
+    backgroundColor: "#6365f1",
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  modelButtonText: {
+    color: "white",
+    marginLeft: 5,
+    fontSize: 15,
+    fontWeight: "500",
+  },
+  modelFileText: {
+    fontSize: 14,
+    color: "gray",
   },
 });
 

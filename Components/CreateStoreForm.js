@@ -36,8 +36,6 @@ function CreateStoreForm({
   const [error, setError] = useState(null);
   const [items, setItems] = useState([]);
 
-
-
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -50,7 +48,6 @@ function CreateStoreForm({
 
     if (!result.cancelled) {
       setImage(result.uri);
-      
     }
   };
 
@@ -68,9 +65,17 @@ function CreateStoreForm({
       const data = new FormData();
       data.append("file", imageData);
       data.append("upload_preset", "sanitary");
+      data.append("stores", "products");
+
       const response = await Axios.post(
         "https://api.cloudinary.com/v1_1/dlxyvl6sb/image/upload",
-        data
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Accept: "application/json",
+          },
+        }
       );
       const selectedItem = items.map(item => item.name);
       console.log("Selected Items", selectedItem);
@@ -160,7 +165,7 @@ function CreateStoreForm({
                     selectText="Select Worker"
                     searchInputPlaceholderText="Enter Worker Categories"
                     onChangeInput={text => console.log(text)}
-                    altFontFamily="ProximaNova-Light"
+                
                     tagRemoveIconColor="#CCC"
                     tagBorderColor="#CCC"
                     tagTextColor="#CCC"

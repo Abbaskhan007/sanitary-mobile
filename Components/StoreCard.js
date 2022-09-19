@@ -16,14 +16,13 @@ export default function StoreCard({ item }) {
       <Image style={styles.image} source={{ uri: item.image }} />
       <View style={styles.infoContainer}>
         <Text style={styles.name}>{item.name}</Text>
+    
+
         <View style={styles.categoryRow}>
-          {item.category.map(
-            (ctg, index) =>
-              index < 2 && (
-                <Text item={ctg} style={styles.category}>
-                  {ctg}
-                </Text>
-              )
+      
+          <Text style={styles.category}>{item.category[0]}</Text>
+          {item.category.length > 1 && (
+            <Text style={styles.more}>{item.category.length - 1} more</Text>
           )}
         </View>
 
@@ -42,7 +41,7 @@ export default function StoreCard({ item }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height: 170,
+    height: 155,
     flexDirection: "row",
     backgroundColor: "#fff",
     padding: 8,
@@ -55,8 +54,8 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   name: {
-    fontSize: 22,
-    fontWeight: "600",
+    fontSize: 18,
+    fontWeight: "500",
     marginBottom: 6,
   },
   categoryRow: {
@@ -74,7 +73,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 5,
     paddingHorizontal: 12,
-    marginBottom: 6,
+    marginBottom: 2,
   },
   ratingRow: {
     flexDirection: "row",
@@ -95,5 +94,8 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     flex: 1,
+  },
+  more: {
+    color: "gray",
   },
 });

@@ -85,8 +85,15 @@ function RegisterationScreen({
       contentContainerStyle={styles.container}
     >
       <StatusBar translucent backgroundColor="transparent" />
-      <View style={{ alignSelf: "flex-start"}}>
-        <BackButton bg="#fff" color="gray" />
+      <View
+        style={{
+          alignSelf: "flex-start",
+          marginTop: 24,
+          zIndex: 8,
+          marginHorizontal: 8,
+        }}
+      >
+        <BackButton bg="#fff" color="#000" />
       </View>
 
       <View style={styles.form}>

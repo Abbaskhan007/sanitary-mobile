@@ -5,6 +5,7 @@ import {
   Pressable,
   Image,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import Header from "../Components/Header";
@@ -14,6 +15,7 @@ import {
   Entypo,
   Ionicons,
   MaterialCommunityIcons,
+  MaterialIcons,
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import WorkerRequestModal from "../Components/WorkerRequestModal";
@@ -31,6 +33,12 @@ function ProfileScreen({ user }) {
         <Entypo style={styles.iconStyle} name="edit" size={20} color="white" />
       </Pressable>
     );
+  };
+
+  console.log("+++++++", sellerModelVisible, workerModelVisible);
+
+  const onOrderPress = item => {
+    navigation.navigate("Orders", item);
   };
 
   const navigation = useNavigation();
@@ -67,60 +75,102 @@ function ProfileScreen({ user }) {
           </View>
         )}
       </View>
-
-      <Text style={styles.heading}>My Orders</Text>
-      <View style={styles.orderRow}>
-        <View style={styles.orderItem}>
-          <MaterialCommunityIcons name="truck" size={32} color="black" />
-          <Text style={styles.orderItemText}>Delivered</Text>
+      <View style={{ paddingHorizontal: 12 }}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Text style={styles.heading}>My Orders</Text>
+          <TouchableOpacity onPress={() => onOrderPress("all")}>
+            <Text
+              style={{
+                textDecorationLine: "underline",
+                color: "gray",
+                fontSize: 15,
+                fontWeight: "500",
+              }}
+            >
+              View All
+            </Text>
+          </TouchableOpacity>
         </View>
-        <View style={styles.orderItem}>
-          <View style={styles.iconBackground}>
+
+        <View style={styles.orderRow}>
+          <TouchableOpacity
+            onPress={() => onOrderPress("Pending")}
+            style={styles.orderItem}
+          >
+            <AntDesign name="creditcard" size={28} color="black" />
+            <Text style={styles.orderItemText}>Pending</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.orderItem}
+            onPress={() => onOrderPress("EnRoute")}
+          >
             <MaterialCommunityIcons
-              name="truck-check-outline"
-              size={32}
-              color="white"
+              name="truck-fast-outline"
+              size={28}
+              color="black"
             />
-          </View>
 
-          <Text style={styles.orderItemText}>To Recieve</Text>
+            <Text style={styles.orderItemText}>EnRoute</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.orderItem}
+            onPress={() => onOrderPress("Delivered")}
+          >
+            <MaterialIcons name="done" size={28} color="black" />
+            <Text style={styles.orderItemText}>Delivered</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.orderItem}
+            onPress={() => onOrderPress("Pending")}
+          >
+            <MaterialCommunityIcons name="truck" size={32} color="black" />
+            <Text style={styles.orderItemText}>Cancelled</Text>
+          </TouchableOpacity>
         </View>
-        <View style={styles.orderItem}>
-          <MaterialCommunityIcons name="truck" size={32} color="black" />
-          <Text style={styles.orderItemText}>To ship</Text>
+        <Text style={styles.heading}>My Reviews</Text>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            onPress={() =>
+              setTimeout(
+                () => setSellerModelVisible(true),
+                Platform.OS === "ios" ? 200 : 0
+              )
+            }
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Become Seller</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              setTimeout(
+                () => setWorkerModelVisible(true),
+                Platform.OS === "ios" ? 200 : 0
+              )
+            }
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Become Worker</Text>
+          </TouchableOpacity>
         </View>
-        <View style={styles.orderItem}>
-          <MaterialCommunityIcons name="truck" size={32} color="black" />
-          <Text style={styles.orderItemText}>Cancelled</Text>
-        </View>
+        {workerModelVisible && (
+          <WorkerRequestModal
+            modalVisible={workerModelVisible}
+            setModalVisible={setWorkerModelVisible}
+          />
+        )}
+        {sellerModelVisible && (
+          <SellerRequestModal
+            modalVisible={sellerModelVisible}
+            setModalVisible={setSellerModelVisible}
+          />
+        )}
       </View>
-      <Text style={styles.heading}>My Reviews</Text>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          onPress={() => setSellerModelVisible(true)}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>Become Seller</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setWorkerModelVisible(true)}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>Become Worker</Text>
-        </TouchableOpacity>
-      </View>
-      {workerModelVisible && (
-        <WorkerRequestModal
-          modalVisible={workerModelVisible}
-          setModalVisible={setWorkerModelVisible}
-        />
-      )}
-      {sellerModelVisible && (
-        <SellerRequestModal
-          modalVisible={sellerModelVisible}
-          setModalVisible={setSellerModelVisible}
-        />
-      )}
     </View>
   );
 }
@@ -131,8 +181,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   heading: {
-    fontSize: 20,
-    fontWeight: "500",
+    fontSize: 18,
+    fontWeight: "400",
     color: "#30302f",
   },
   orderRow: {
@@ -147,8 +197,8 @@ const styles = StyleSheet.create({
   },
   orderItemText: {
     color: "#333",
-    fontSize: 16,
-    fontWeight: "500",
+    fontSize: 14,
+    fontWeight: "400",
     marginTop: 4,
   },
   iconBackground: {
@@ -177,7 +227,7 @@ const styles = StyleSheet.create({
   bg: {
     backgroundColor: "#818cf8",
     height: 200,
-    paddingTop: 24,
+    paddingTop: 12,
   },
   image: {
     width: 140,

@@ -11,16 +11,18 @@ import StarRating from "../Components/StarRating";
 import constants from "../assets/constants";
 import Carousel from "../Components/Carousel";
 import Header from "../Components/Header";
-import { useRoute } from "@react-navigation/native";
+import { useRoute, useNavigation } from "@react-navigation/native";
 import Axios from "axios";
 import { connect } from "react-redux";
 import { ADD_TO_CART, ADD_TO_CART_LOCAL } from "../Redux/Constants";
+import { Feather } from "@expo/vector-icons";
 
 function ProductDetail({ addToCartAction, addToCartLocal, user, cart }) {
   const routes = useRoute();
   const { productId } = routes.params;
   const [productData, setProductData] = useState([]);
   const [quantity, setQuantity] = useState(1);
+  const navigation = useNavigation();
 
   useEffect(() => {
     fetchProductDetails();
@@ -64,7 +66,7 @@ function ProductDetail({ addToCartAction, addToCartLocal, user, cart }) {
 
   return (
     <View style={styles.container}>
-      <Header />
+      <Header color="#fff" />
       <View style={styles.imageContainer}>
         <Carousel images={productData.images} />
       </View>
@@ -76,7 +78,9 @@ function ProductDetail({ addToCartAction, addToCartLocal, user, cart }) {
               <StarRating rating={productData.rating} />
               <Text style={styles.ratingNum}>({productData.rating})</Text>
             </View>
-            <Text style={styles.reviewText}>273 Reviews</Text>
+            <Text style={styles.reviewText}>
+              {productData?.reviews?.length} Reviews
+            </Text>
           </View>
         </View>
         <View style={styles.storeRow}>
@@ -94,6 +98,20 @@ function ProductDetail({ addToCartAction, addToCartLocal, user, cart }) {
         <Text numberOfLines={4} style={styles.description}>
           {productData.description}
         </Text>
+
+        <View style={styles.buttonRow}>
+          <View style={styles.ctgButton}>
+            <Text style={styles.category}>{productData.category}</Text>
+          </View>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("ARView", productData.model)}
+            style={styles.arButton}
+          >
+            <Feather name="codesandbox" size={24} color="#fff" />
+            <Text style={styles.arText}>AR View</Text>
+          </TouchableOpacity>
+        </View>
+
         <View style={styles.row}>
           <Text style={styles.price}>Rs {productData.price}</Text>
 
@@ -107,10 +125,22 @@ function ProductDetail({ addToCartAction, addToCartLocal, user, cart }) {
             </TouchableOpacity>
           </View>
         </View>
-
-        <TouchableOpacity onPress={addToCart} style={styles.AddToCartButton}>
-          <Text style={styles.cartText}>Add to Cart</Text>
-        </TouchableOpacity>
+        <View style={styles.btnRow}>
+          <TouchableOpacity onPress={addToCart} style={styles.AddToCartButton}>
+            <Text style={styles.cartText}>Add to Cart</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("Reviews", {
+                reviews: productData.reviews,
+                rating: productData.rating,
+              })
+            }
+            style={styles.reviewBtn}
+          >
+            <Text style={styles.cartText}>Reviews</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -120,11 +150,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: constants.theme,
-    padding: 18,
+    padding: 16,
   },
   imageContainer: {
     flex: 1,
     justifyContent: "center",
+    marginBottom: 30,
   },
   image: {
     height: 300,
@@ -137,14 +168,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 24,
     padding: 18,
-    marginBottom: 18,
+    marginBottom: 10,
   },
   nameRatingRow: {
     flexDirection: "row",
     justifyContent: "space-between",
   },
   nameText: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: "500",
   },
   storeRow: {
@@ -164,15 +195,27 @@ const styles = StyleSheet.create({
   },
   AddToCartButton: {
     backgroundColor: "#6365f1",
-    padding: 16,
+    padding: 12,
     borderRadius: 8,
+    flex: 1,
+    marginRight: 12,
+  },
+  reviewBtn: {
+    backgroundColor: "#6365f1",
+    padding: 12,
+    borderRadius: 8,
+    paddingHorizontal: 24,
+  },
+  btnRow: {
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: 16,
   },
   cartText: {
-    fontSize: 20,
+    fontSize: 16,
     color: "#fff",
     textAlign: "center",
-    fontWeight: "600",
+    fontWeight: "500",
   },
   ratingRow: {
     flexDirection: "row",
@@ -190,14 +233,14 @@ const styles = StyleSheet.create({
     marginLeft: "auto",
   },
   price: {
-    fontSize: 26,
-    fontWeight: "700",
+    fontSize: 22,
+    fontWeight: "600",
     marginTop: 12,
   },
   storeImage: {
     width: "100%",
     height: "100%",
-    borderRadius: 25
+    borderRadius: 25,
   },
   storeImageContainer: {
     width: 50,
@@ -229,13 +272,46 @@ const styles = StyleSheet.create({
   quantityButton: {
     backgroundColor: "#6365f1",
     color: "#fff",
-    fontSize: 32,
-    height: 40,
-    width: 40,
-    fontWeight: "500",
+    fontSize: 28,
+    // height: 35,
+    width: 35,
+    fontWeight: "400",
     overflow: "hidden",
     textAlign: "center",
     borderRadius: 10,
+    paddingHorizontal: 12,
+  },
+  category: {
+    fontSize: 16,
+    fontWeight: "500",
+    color: "gray",
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 6,
+    padding: 7,
+    backgroundColor: "#e4e4e4",
+    textAlign: "center",
+    paddingHorizontal: 26,
+  },
+
+  buttonRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginVertical: 8,
+  },
+  arButton: {
+    backgroundColor: "#6365f1",
+    padding: 10,
+    paddingHorizontal: 18,
+    borderRadius: 8,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  arText: {
+    color: "#fff",
+    marginLeft: 14,
+    fontSize: 16,
   },
 });
 

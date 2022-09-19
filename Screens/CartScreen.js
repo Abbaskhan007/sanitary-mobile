@@ -121,6 +121,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "500",
+    paddingTop: 22
   },
   message: {
     fontSize: 20,

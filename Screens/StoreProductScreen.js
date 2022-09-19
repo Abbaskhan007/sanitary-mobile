@@ -14,7 +14,6 @@ import { Ionicons } from "@expo/vector-icons";
 import AddProductForm from "../Components/AddProductForm";
 
 function StoreProductScreen({ store, categories, seller, user }) {
-  console.log("Store____________", store);
   // const [category, setCategory] = useState("All");
   const [activeCategories, setActiveCategories] = useState([
     { label: "All", name: "All" },
@@ -35,8 +34,6 @@ function StoreProductScreen({ store, categories, seller, user }) {
   // }, [categories]);
 
   useEffect(() => {}, [isModalVisible]);
-
-  console.log("Products", products);
 
   return (
     <View style={styles.container}>

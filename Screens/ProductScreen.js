@@ -1,4 +1,10 @@
-import { View, StyleSheet, FlatList, SafeAreaView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  SafeAreaView,
+  StatusBar,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import ProductCard from "../Components/ProductCard";
 import constants from "../assets/constants";
@@ -24,6 +30,7 @@ import { AntDesign } from "@expo/vector-icons";
 import ProductsFilter from "../Components/ProductsFilter";
 import LoadingScreen from "./LoadingScreen";
 import ImageSearch from "../Components/ImageSearch";
+import BottomSpace from "../Components/BottomSpace";
 
 function ProductScreen({
   fetchProducts,
@@ -124,7 +131,7 @@ function ProductScreen({
           placeholder="Search Product"
           setSearch={onSearch}
         />
-       <ImageSearch/>
+        <ImageSearch />
         <AntDesign
           onPress={() => setModalVisible(!isModalVisible)}
           name="filter"
@@ -146,6 +153,7 @@ function ProductScreen({
         showsVerticalScrollIndicator={false}
         ItemSeparatorComponent={() => <View style={styles.seperator}></View>}
         renderItem={({ item, index }) => <ProductCard item={item} />}
+        ListFooterComponent={<BottomSpace />}
       />
     </View>
   );
@@ -267,6 +275,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
     backgroundColor: constants.bgColor,
+    paddingTop: constants.paddingTop,
   },
 
   seperator: {
