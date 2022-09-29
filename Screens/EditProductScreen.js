@@ -10,13 +10,15 @@ import {
   Image,
   Platform,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Header from "../Components/Header";
 import constants from "../assets/constants";
 import { connect } from "react-redux";
 import LoadingScreen from "./LoadingScreen";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import RNPickerSelect from "react-native-picker-select";
+import { Picker } from "@react-native-picker/picker";
+
 import Axios from "axios";
 
 import * as ImagePicker from "expo-image-picker";
@@ -33,7 +35,6 @@ function EditProductScreen({
   productCategories,
 }) {
   const product = route.params;
-
   const [name, setName] = useState(product.name);
   const [description, setDescription] = useState(product.description);
   const [price, setPrice] = useState(product.price + "");
@@ -212,8 +213,20 @@ function EditProductScreen({
             numberOfLines={3}
           />
           <Text style={[styles.heading, { marginBottom: 5 }]}>Categories</Text>
-          <View style={{ width: "100%" }}>
-            <RNPickerSelect
+          {Platform.OS === "android" ? (
+            <Picker
+              selectedValue={items}
+              onValueChange={value => setItems(value)}
+              style={{ backgroundColor: "#e5e7eb", marginTop: 8 }}
+              mode="dropdown"
+            >
+              {productCategories.map(ctg => (
+                <Picker.Item label={ctg.label} value={ctg.value} />
+              ))}
+            </Picker>
+          ) : (
+            <View style={{ width: "100%" }}>
+              <RNPickerSelect
               useNativeAndroidPickerStyle={false}
               onValueChange={value => setItems(value)}
               items={productCategories}
@@ -228,7 +241,8 @@ function EditProductScreen({
                 },
               }}
             />
-          </View>
+            </View>
+          )}
           <TouchableOpacity
             onPress={pickImage}
             style={styles.cameraIconContainer}
@@ -392,7 +406,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 10,
     alignSelf: "center",
-    marginVertical: 12,
+    marginVertical: 32,
   },
   image: {
     width: 120,

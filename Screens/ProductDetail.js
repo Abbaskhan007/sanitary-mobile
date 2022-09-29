@@ -121,7 +121,7 @@ function ProductDetail({ addToCartAction, addToCartLocal, user, cart }) {
             </TouchableOpacity>
             <Text style={styles.qty}>{quantity}</Text>
             <TouchableOpacity onPress={() => quantityHandler(-1)}>
-              <Text style={styles.quantityButton}>-</Text>
+              <Text style={[styles.quantityButton,{paddingHorizontal: 12}]}>-</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     backgroundColor: "#fff",
-    borderRadius: 24,
+    borderRadius: 15,
     padding: 18,
     marginBottom: 10,
   },
@@ -195,14 +195,14 @@ const styles = StyleSheet.create({
   },
   AddToCartButton: {
     backgroundColor: "#6365f1",
-    padding: 12,
+    padding: 13,
     borderRadius: 8,
     flex: 1,
     marginRight: 12,
   },
   reviewBtn: {
     backgroundColor: "#6365f1",
-    padding: 12,
+    padding: 13,
     borderRadius: 8,
     paddingHorizontal: 24,
   },
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#fff",
     textAlign: "center",
-    fontWeight: "500",
+    fontWeight: "600",
   },
   ratingRow: {
     flexDirection: "row",
@@ -274,12 +274,13 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 28,
     // height: 35,
-    width: 35,
+    //width: 35,
     fontWeight: "400",
     overflow: "hidden",
     textAlign: "center",
     borderRadius: 10,
-    paddingHorizontal: 12,
+    paddingHorizontal: 10,
+    paddingVertical: 2
   },
   category: {
     fontSize: 16,

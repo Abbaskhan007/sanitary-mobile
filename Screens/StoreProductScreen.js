@@ -68,12 +68,18 @@ function StoreProductScreen({ store, categories, seller, user }) {
           storeId={store._id}
         />
       )}
-      <FlatList
-        data={products}
-        showsVerticalScrollIndicator={false}
-        ItemSeparatorComponent={() => <View style={styles.seperator}></View>}
-        renderItem={({ item, index }) => <ProductCard item={item} />}
-      />
+      {products.length > 0 ? (
+        <FlatList
+          data={products}
+          showsVerticalScrollIndicator={false}
+          ItemSeparatorComponent={() => <View style={styles.seperator}></View>}
+          renderItem={({ item, index }) => <ProductCard item={item} />}
+        />
+      ) : (
+        <View style={styles.emptyContainer}>
+          <Text style={styles.empty}>No Products Present</Text>
+        </View>
+      )}
     </View>
   );
 }
@@ -108,5 +114,18 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
     marginLeft: 5,
+  },
+  emptyContainer: {
+    display: "flex",
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: "auto",
+    marginTop: "40%",
+  },
+  empty: {
+    fontSize: 22,
+    fontWeight: "500",
+    color: "gray",
   },
 });

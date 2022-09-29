@@ -19,7 +19,6 @@ import { Provider } from "react-redux";
 import { store } from "./Redux/combineReducer";
 import BottomNavigator from "./Navigation/HomeScreen";
 import MyDrawer from "./Navigation/MyDrawer";
-import SplashScreen from "./Screens/SplashScreen";
 import RegisterationScreen from "./Screens/RegisterationScreen";
 import LoginScreen from "./Screens/LoginScreen";
 import StoreDetailsScreen from "./Screens/StoreDetailsScreen";
@@ -40,6 +39,8 @@ import Reviews from "./Screens/Reviews";
 import OrdersScreen from "./Screens/OrdersScreen";
 import OrderDetailScreen from "./Screens/OrderDetailScreen";
 import ARView from "./Screens/ARView";
+import SellerOrders from "./Screens/SellerOrders";
+import ProfileScreen from "./Screens/ProfileScreen";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -100,7 +101,9 @@ export default function App() {
             />
             <Stack.Screen name="Reviews" component={Reviews} />
             <Stack.Screen name="Orders" component={OrdersScreen} />
+            <Stack.Screen name="SellerOrders" component={SellerOrders} />
             <Stack.Screen name="OrderDetail" component={OrderDetailScreen} />
+            <Stack.Screen name="User Profile" component={ProfileScreen} />
             <Stack.Screen name="ARView" component={ARView} />
           </Stack.Navigator>
         </NavigationContainer>

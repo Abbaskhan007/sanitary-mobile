@@ -3,14 +3,14 @@ import React from "react";
 import { useRoute } from "@react-navigation/native";
 import BackButton from "./BackButton";
 
-export default function Header({ Left, Right, color = "#000" }) {
+export default function Header({ Left, Right, color = "#000", title }) {
   const route = useRoute();
   console.log("Route", route.name);
   return (
     <View style={styles.container}>
       <BackButton color={color} />
       <Text style={[styles.title, !Right && { marginLeft: -52 }, { color }]}>
-        {route.name}
+        {title || route.name}
       </Text>
       {Right && <Right />}
     </View>

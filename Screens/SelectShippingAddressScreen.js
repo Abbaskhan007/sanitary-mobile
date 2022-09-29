@@ -12,6 +12,7 @@ import constants from "../assets/constants";
 import ShippingAddressBox from "../Components/ShippingAddressBox";
 import Header from "../Components/Header";
 import { useIsFocused } from "@react-navigation/native";
+import ActivitySteps from "../Components/ActivitySteps";
 
 function SelectShippingAddressScreen({ user, navigation }) {
   const [shippingData, setShippingData] = useState({});
@@ -29,6 +30,8 @@ function SelectShippingAddressScreen({ user, navigation }) {
   return (
     <View style={styles.container}>
       <Header />
+      <View style={{marginTop: 14}}/>
+      <ActivitySteps step={2}/>
       <TouchableOpacity
         onPress={() =>
           navigation.navigate("Shipping Address", { action: "new" })

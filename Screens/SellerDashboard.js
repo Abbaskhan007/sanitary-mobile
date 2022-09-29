@@ -5,14 +5,14 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import SellerDashboardProduct from "../Components/SellerDashboardProduct";
 import Axios from "axios";
 import constants from "../assets/constants";
 import SellerDashboardStore from "../Components/SellerDashboardStore";
 import Header from "../Components/Header";
-import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import CreateStoreForm from "../Components/CreateStoreForm";
 import { FETCH_SELLER_DATA } from "../Redux/Constants";
 
@@ -101,6 +101,13 @@ function SellerDashboard({
           }}
         />
       </View>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("SellerOrders")}
+        style={styles.orderButton}
+      >
+        <FontAwesome5 name="box" size={22} color="#fff" />
+        <Text style={styles.orderText}>View Orders</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -142,6 +149,21 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
     marginLeft: 5,
+  },
+  orderButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#818cf8",
+    padding: 12,
+    borderRadius: 8,
+    marginVertical: 12,
+  },
+  orderText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "600",
+    marginLeft: 12,
   },
 });
 

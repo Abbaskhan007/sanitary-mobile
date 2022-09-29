@@ -35,7 +35,7 @@ export default function Carousel({ images }) {
       >
         {images?.map((item, index) => {
           return (
-            <View key={item.image} style={styles.container}>
+            <View key={index} key={item.image} style={styles.container}>
               <Image style={styles.image} source={{ uri: item.url }} />
             </View>
           );
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 12,
     position: "absolute",
-    bottom: 30,
-    left: "40%",
+    bottom: 20,
+    left: "44%",
   },
 });

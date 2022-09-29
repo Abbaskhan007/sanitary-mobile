@@ -13,7 +13,6 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.config.ReactFeatureFlags;
 import com.facebook.soloader.SoLoader;
 import com.augmented.sanitary.newarchitecture.MainApplicationReactNativeHost;
-import com.viromedia.bridge.ReactViroPackage;
 
 import expo.modules.ApplicationLifecycleDispatcher;
 import expo.modules.ReactNativeHostWrapper;
@@ -21,6 +20,7 @@ import expo.modules.ReactNativeHostWrapper;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+import com.viromedia.bridge.ReactViroPackage;
 
 public class MainApplication extends Application implements ReactApplication {
   private final ReactNativeHost mReactNativeHost = new ReactNativeHostWrapper(
@@ -37,10 +37,8 @@ public class MainApplication extends Application implements ReactApplication {
       List<ReactPackage> packages = new PackageList(this).getPackages();
       // Packages that cannot be autolinked yet can be added manually here, for example:
       // packages.add(new MyReactNativePackage());
-      
-      packages.add(new ReactViroPackage(ReactViroPackage.ViroPlatform.valueOf("AR")));
-
-      return packages;
+        packages.add(new ReactViroPackage(ReactViroPackage.ViroPlatform.valueOf("AR")));
+        return packages;
     }
 
     @Override

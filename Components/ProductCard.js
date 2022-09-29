@@ -98,15 +98,15 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     flex: 1,
-    height: 180,
+    height: 172,
     backgroundColor: "#fff",
     borderRadius: 22,
     padding: 6,
   },
 
   imageContainer: {
-    width: "45%",
-    padding: 12,
+    width: "43%",
+    padding: 10,
     backgroundColor: constants.bgColor,
     borderRadius: 22,
   },

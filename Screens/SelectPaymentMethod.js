@@ -3,6 +3,7 @@ import React from "react";
 import Header from "../Components/Header";
 import { connect } from "react-redux";
 import { SELECT_PAYMENT_METHOD } from "../Redux/Constants";
+import ActivitySteps from "../Components/ActivitySteps";
 
 function SelectPaymentMethod({ selectPaymentMethod, navigation }) {
   const onPaymentSelect = paymentMethod => {
@@ -12,9 +13,11 @@ function SelectPaymentMethod({ selectPaymentMethod, navigation }) {
   return (
     <View style={{ flex: 1, paddingTop: 16 }}>
       <Header />
+      <View style={{marginTop: 14}}/>
+      <ActivitySteps step={3}/>
       <View style={styles.container}>
         <Text style={styles.heading}>Debit Card</Text>
-        <TouchableOpacity onPress={() => onPaymentSelect("card")}>
+        <TouchableOpacity onPress={() => onPaymentSelect("bank")}>
           <Image
             style={styles.image}
             source={{

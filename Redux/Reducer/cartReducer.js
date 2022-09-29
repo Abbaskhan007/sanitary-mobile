@@ -31,6 +31,7 @@ export const cartReducer = (state = initialState, action) => {
     case SAVE_SHIPPING_DETAILS:
       return { ...state, shipping: action.payload };
     case EMPTY_CART:
+      AsyncStorage.removeItem("cart");
       return { ...state, cart: [] };
     case DELETE_TO_CART_LOCAL:
       const newCart = state.cart.filter(

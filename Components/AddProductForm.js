@@ -9,6 +9,7 @@ import {
   FlatList,
   Image,
   Alert,
+  Platform,
 } from "react-native";
 import React, { useState } from "react";
 import { connect } from "react-redux";
@@ -19,6 +20,7 @@ import * as ImagePicker from "expo-image-picker";
 import constants from "../assets/constants";
 import Axios from "axios";
 import RNPickerSelect from "react-native-picker-select";
+import { Picker } from "@react-native-picker/picker";
 import {
   PRODUCT_FETCH_REQUEST,
   PRODUCT_FETCH_REQUEST_FAIL,
@@ -86,6 +88,7 @@ function AddProductForm({
       !shippingPrice ||
       !model
     ) {
+      console.log("Please Enter all the fields");
       setError("Please Enter all the fields");
     } else {
       if (model.split(".")[model.split(".").length - 1] !== "glb") {
@@ -143,7 +146,7 @@ function AddProductForm({
         category: items,
         seller,
         store: storeId,
-        model
+        model,
       };
 
       try {
@@ -153,7 +156,7 @@ function AddProductForm({
         );
         console.log("Response*************************", response);
         fetchProducts();
-        Alert.alert("Store Created Successfully");
+        Alert.alert("Product Uploaded Successfully");
         setModalVisible(false);
         navigation.navigate("Seller Dashboard");
       } catch (err) {
@@ -171,7 +174,7 @@ function AddProductForm({
     // console.log("Item", item, updatedImages);
     setImages(updatedImages);
   };
-
+  console.log("--------");
   return (
     <View style={styles.centeredView}>
       <Modal
@@ -248,28 +251,43 @@ function AddProductForm({
                 <Text style={[styles.heading, { marginBottom: 5 }]}>
                   Categories
                 </Text>
-                <View style={{ width: "100%" }}>
-                  <RNPickerSelect
-                    useNativeAndroidPickerStyle={false}
+
+                {Platform.OS === "android" ? (
+                  <Picker
+                    selectedValue={items}
                     onValueChange={value => setItems(value)}
-                    items={categories}
-                    placeholder={{
-                      label: "Select Product Category",
-                      value: null,
-                    }}
-                    value={items}
-                    Icon={() => (
-                      <AntDesign name="down" size={16} color="black" />
-                    )}
-                    style={{
-                      ...pickerSelectStyles,
-                      iconContainer: {
-                        top: 15,
-                        right: 12,
-                      },
-                    }}
-                  />
-                </View>
+                    style={{ backgroundColor: "#e5e7eb", marginTop: 8 }}
+                    mode="dropdown"
+                  >
+                    {categories.map(ctg => (
+                      <Picker.Item label={ctg.label} value={ctg.value} />
+                    ))}
+                  </Picker>
+                ) : (
+                  <View style={{ width: "100%" }}>
+                    <RNPickerSelect
+                      useNativeAndroidPickerStyle={false}
+                      onValueChange={value => setItems(value)}
+                      items={categories}
+                      placeholder={{
+                        label: "Select Product Category",
+                        value: null,
+                      }}
+                      value={items}
+                      Icon={() => (
+                        <AntDesign name="down" size={16} color="black" />
+                      )}
+                      style={{
+                        ...pickerSelectStyles,
+                        iconContainer: {
+                          top: 15,
+                          right: 12,
+                        },
+                      }}
+                    />
+                  </View>
+                )}
+
                 <Text style={[styles.heading, { marginTop: 14 }]}>
                   Add Image
                 </Text>
@@ -335,6 +353,7 @@ function AddProductForm({
           </View>
         </View>
       </Modal>
+      
     </View>
   );
 }

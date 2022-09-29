@@ -29,7 +29,7 @@ function CartScreen({ cart, navigation }) {
     return (
       <View style={{ padding: 18, flex: 1 }}>
         <Header />
-        <ActivitySteps />
+        <ActivitySteps step={1} />
         <View style={{ flex: 1 }}>
           <FlatList
             showsVerticalScrollIndicator={false}

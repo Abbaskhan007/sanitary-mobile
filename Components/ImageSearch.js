@@ -1,4 +1,10 @@
-import { View, Text, Touchable, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Touchable,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
@@ -9,6 +15,8 @@ import constants from "../assets/constants";
 import mime from "mime";
 
 function ImageSearch({ fetchProducts }) {
+  const URL_FLASK =
+    Platform.OS === "android" ? "http://192.168.0.117" : "http://127.0.0.1";
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -36,7 +44,7 @@ function ImageSearch({ fetchProducts }) {
         // data.append("file", imageData);
         console.log("________________________ form Data:", formData);
         const response = await Axios.post(
-          "http://192.168.0.112:4000/flaskSearchImage",
+          `${URL_FLASK}:4000/flaskSearchImage`,
           formData,
           {
             headers: {

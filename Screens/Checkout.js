@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import CardPayment from "../Components/CardPayment";
 import { connect } from "react-redux";
 import Header from "../Components/Header";
+import ActivitySteps from "../Components/ActivitySteps";
 
 function Checkout({ cart, paymentMethod, shippingAddress }) {
   console.log("Props_:", cart, paymentMethod, shippingAddress);
@@ -22,6 +23,8 @@ function Checkout({ cart, paymentMethod, shippingAddress }) {
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
       <Header />
+      <View style={{marginTop: 14}}/>
+      <ActivitySteps step={4}/>
       <View style={styles.paymentRow}>
         <Text style={styles.title}>Payment Method </Text>
         <Text style={styles.title}>{paymentMethod}</Text>

@@ -24,8 +24,8 @@ import {
 } from "../Redux/Constants";
 import constants from "../assets/constants";
 import ErrorBox from "../Components/ErrorBox";
-import { useEffect } from "react/cjs/react.development";
 import BackButton from "../Components/BackButton";
+import Header from "../Components/Header";
 function RegisterationScreen({
   navigation,
   route,
@@ -58,6 +58,12 @@ function RegisterationScreen({
     );
   });
 
+  useLayoutEffect(() => {
+    if (user.user.name) {
+      navigation.replace("User Profile");
+    }
+  });
+
   const submitHandler = async e => {
     setError(null);
 
@@ -85,7 +91,7 @@ function RegisterationScreen({
       contentContainerStyle={styles.container}
     >
       <StatusBar translucent backgroundColor="transparent" />
-      <View
+      {/* <View
         style={{
           alignSelf: "flex-start",
           marginTop: 24,
@@ -94,6 +100,10 @@ function RegisterationScreen({
         }}
       >
         <BackButton bg="#fff" color="#000" />
+      </View> */}
+
+      <View style={{ marginTop: 12, zIndex: 50,  alignSelf: "flex-start", }}>
+        <Header title="Registeration" />
       </View>
 
       <View style={styles.form}>

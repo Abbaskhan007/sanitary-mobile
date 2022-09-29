@@ -1,12 +1,12 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 
-export default function ActivitySteps({ step = 2 }) {
+export default function ActivitySteps({ step }) {
   return (
     <View style={styles.container}>
       <View style={styles.step}>
         <View style={step >= 1 ? styles.activeLine : styles.inActiveLine} />
-        <Text style={styles.title}>Sign In</Text>
+        <Text style={styles.title}>Cart</Text>
       </View>
       <View style={styles.step}>
         <View style={step >= 2 ? styles.activeLine : styles.inActiveLine} />

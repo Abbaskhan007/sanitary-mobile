@@ -1,4 +1,10 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Platform,
+} from "react-native";
 import React, { useRef, useEffect } from "react";
 import * as Animatable from "react-native-animatable";
 import { connect } from "react-redux";
@@ -99,8 +105,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 22,
-    
+    marginTop: Platform.OS === "android" ? 0 : 22,
   },
   btn: {
     backgroundColor: "#fff",

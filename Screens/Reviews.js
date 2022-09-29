@@ -14,14 +14,20 @@ export default function Reviews() {
     <View style={styles.container}>
       <Header />
 
-      <View style={styles.topRow}>
-        <View style={styles.numStarRow}>
-          <Text style={styles.numStar}>{rating}</Text>
-          <Text style={styles.totalStar}>/ 5</Text>
-          <StarRating rating={rating} />
+      {reviews.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>No Rating Available</Text>
         </View>
-        <Text style={styles.numRating}>{reviews.length} Reviews</Text>
-      </View>
+      ) : (
+        <View style={styles.topRow}>
+          <View style={styles.numStarRow}>
+            <Text style={styles.numStar}>{rating}</Text>
+            <Text style={styles.totalStar}>/ 5</Text>
+            <StarRating rating={rating} />
+          </View>
+          <Text style={styles.numRating}>{reviews.length} Reviews</Text>
+        </View>
+      )}
 
       <FlatList
         data={reviews}

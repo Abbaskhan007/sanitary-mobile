@@ -5,9 +5,18 @@ import { Ionicons } from "@expo/vector-icons";
 
 export default function BackButton({ bg, color }) {
   const navigation = useNavigation();
+
+  const previousScreen = () => {
+    console.log("-----------",navigation.canGoBack())
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    } else {
+      navigation.replace("Drawer");
+    }
+  };
   return (
     <TouchableOpacity
-      onPress={() => navigation.goBack()}
+      onPress={previousScreen}
       style={[styles.conatiner, { backgroundColor: bg, color }]}
     >
       <Ionicons name="chevron-back-outline" size={32} color={color} />

@@ -99,6 +99,8 @@ function ProductsFilter({
             min={minimum}
             setMin={setMinimum}
             setMax={setMaximum}
+            MAX={MAX}
+            MIN={MIN}
           />
           <View style={styles.inputRow}>
             <TextInput
@@ -160,7 +162,7 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: "#fff",
-    padding: 22,
+    padding: 16,
     position: "absolute",
     bottom: 0,
     left: 0,
@@ -168,8 +170,8 @@ const styles = StyleSheet.create({
     borderRadius: 24,
   },
   categoryTitle: {
-    fontSize: 20,
-    fontWeight: "600",
+    fontSize: 18,
+    fontWeight: "500",
     marginBottom: 12,
     marginTop: 18,
   },
@@ -191,13 +193,15 @@ const styles = StyleSheet.create({
   filterButton: {
     backgroundColor: "#818cf8",
     padding: 13,
-    borderRadius: 12,
-    marginVertical: 16,
+    borderRadius: 10,
+    marginTop: 22,
+    marginBottom: 12
   },
   filterButtonText: {
-    fontSize: 24,
-    fontWeight: "500",
+    fontSize: 18,
+    fontWeight: "600",
     textAlign: "center",
     color: "#fff",
+    
   },
 });

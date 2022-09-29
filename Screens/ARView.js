@@ -1,6 +1,5 @@
-// import React, { useState } from "react";
-// import { StyleSheet, View } from "react-native";
-// import { useRoute } from "@react-navigation/native";
+// import React, {useState} from 'react';
+// import {StyleSheet, View} from 'react-native';
 // import {
 //   ViroARScene,
 //   ViroText,
@@ -9,27 +8,26 @@
 //   Viro3DObject,
 //   ViroAmbientLight,
 //   ViroImage,
-// } from "@viro-community/react-viro";
+// } from '@viro-community/react-viro';
 
 // const initialScene = () => {
 //   const [position, setPosition] = useState([0, 0, -5]);
 //   const [scale, setScale] = useState([0.3, 0.3, 0.3]);
 //   const [rotation, setRotation] = useState([0, 50, 0]);
-//   const model = useRoute().params;
 
 //   const moveObj = newPosition => {
 //     setPosition(newPosition);
 //   };
 
 //   const rotateObj = (rotateState, rotationFactor, source) => {
-//     console.log("________________");
+//     console.log('________________');
 //     if (rotateState === 3) {
 //       let newRotation = [
 //         rotation[0],
 //         rotation[1] + rotationFactor,
 //         rotation[2],
 //       ];
-//       console.log("New Rotation", newRotation);
+//       console.log('New Rotation', newRotation);
 //       setRotation(newRotation);
 //     }
 //   };
@@ -50,7 +48,7 @@
 //         scale={scale}
 //         rotation={rotation}
 //         source={{
-//           uri: "https://res.cloudinary.com/dlxyvl6sb/image/upload/v1662995672/Couch_ardw6t.glb",
+//           uri: 'https://res.cloudinary.com/dlxyvl6sb/image/upload/v1662995672/Couch_ardw6t.glb',
 //         }}
 //         onDrag={moveObj}
 //         onPinch={pinchObj}
@@ -72,7 +70,7 @@
 //   );
 // };
 
-// export default function ARView() {
+// export default () => {
 //   return (
 //     <ViroARSceneNavigator
 //       initialScene={{
@@ -81,36 +79,26 @@
 //       style={styles.f1}
 //     />
 //   );
-// }
+// };
 
 // var styles = StyleSheet.create({
-//   f1: { flex: 1 },
+//   f1: {flex: 1},
 //   helloWorldTextStyle: {
-//     fontFamily: "Arial",
+//     fontFamily: 'Arial',
 //     fontSize: 30,
-//     color: "#ffffff",
-//     textAlignVertical: "center",
-//     textAlign: "center",
+//     color: '#ffffff',
+//     textAlignVertical: 'center',
+//     textAlign: 'center',
 //   },
 // });
 
-import { View, Text } from "react-native";
-import React from "react";
-
-import {
-  ViroARScene,
-  ViroText,
-  ViroConstants,
-  ViroARSceneNavigator,
-  Viro3DObject,
-  ViroAmbientLight,
-  ViroImage,
-} from "@viro-community/react-viro";
+import { View, Text } from 'react-native'
+import React from 'react'
 
 export default function ARView() {
   return (
     <View>
       <Text>ARView</Text>
     </View>
-  );
+  )
 }

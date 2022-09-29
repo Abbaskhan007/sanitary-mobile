@@ -14,16 +14,16 @@ import constants from "../assets/constants";
 import { connect } from "react-redux";
 import OrderBox from "../Components/OrderBox";
 
-function OrdersScreen({ user }) {
+function SellerOrders({ seller }) {
   const [orders, setOrders] = useState([]);
   const status = useRoute().params;
-  const [activeTab, setActiveTab] = useState(status);
+  const [activeTab, setActiveTab] = useState("all");
   console.log("Status", status);
 
   const fetchOrders = async () => {
     try {
       const { data } = await Axios.get(
-        `${constants.url}/orders/myOrders/${user}?status=${activeTab}`
+        `${constants.url}/orders/sellerOrders/${seller}?status=${activeTab}`
       );
       setOrders(data);
     } catch (error) {
@@ -37,11 +37,10 @@ function OrdersScreen({ user }) {
     fetchOrders();
   }, [activeTab]);
 
- 
-
   return (
     <ScrollView style={styles.root}>
       <Header />
+
       <View style={styles.topBar}>
         <TouchableOpacity
           onPress={() => setActiveTab("all")}
@@ -74,28 +73,45 @@ function OrdersScreen({ user }) {
           <Text style={styles.topBarText}>Cancelled</Text>
         </TouchableOpacity>
       </View>
-      <FlatList
-        data={orders}
-        keyExtractor={item => item._id}
-        ListHeaderComponent={() => (
-          <View
-            style={{ height: 8, backgroundColor: "#d1d5db", marginBottom: 12 }}
-          />
-        )}
-        ListFooterComponent={() => (
-          <View
-            style={{ height: 8, backgroundColor: "#d1d5db", marginBottom: 12 }}
-          />
-        )}
-        ItemSeparatorComponent={() => (
-          <View
-            style={{ height: 8, backgroundColor: "#d1d5db", marginBottom: 12 }}
-          />
-        )}
-        renderItem={({ item }) => <OrderBox order={item} />}
-      />
-      <View style={{marginBottom: 42}}/>
-     
+      {orders.length == 0 ? (
+        <View style={styles.noOrder}>
+          <Text style={styles.noOrderText}>No Orders Present</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={orders}
+          keyExtractor={item => item._id}
+          ListHeaderComponent={() => (
+            <View
+              style={{
+                height: 8,
+                backgroundColor: "#d1d5db",
+                marginBottom: 12,
+              }}
+            />
+          )}
+          ListFooterComponent={() => (
+            <View
+              style={{
+                height: 8,
+                backgroundColor: "#d1d5db",
+                marginBottom: 12,
+              }}
+            />
+          )}
+          ItemSeparatorComponent={() => (
+            <View
+              style={{
+                height: 8,
+                backgroundColor: "#d1d5db",
+                marginBottom: 12,
+              }}
+            />
+          )}
+          renderItem={({ item }) => <OrderBox order={item} />}
+        />
+      )}
+      <View style={{height: 32}}/>
     </ScrollView>
   );
 }
@@ -103,8 +119,10 @@ function OrdersScreen({ user }) {
 const styles = StyleSheet.create({
   root: {
     paddingVertical: 22,
+    marginBottom: 12,
+    
   },
-  container: {},
+
   topBar: {
     flexDirection: "row",
     alignItems: "center",
@@ -121,13 +139,24 @@ const styles = StyleSheet.create({
     fontSize: 15,
     paddingBottom: 2,
   },
+  noOrder: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 250
+  
+  },
+  noOrderText: {
+    fontSize: 24,
+    fontWeight: "600",
+    color: "#9ca3af",
+  },
 });
 
 const mapStateToProps = state => {
-  console.log("User", state.user.user);
   return {
-    user: state.user.user._id,
+    seller: state.seller._id,
   };
 };
 
-export default connect(mapStateToProps, null)(OrdersScreen);
+export default connect(mapStateToProps, null)(SellerOrders);

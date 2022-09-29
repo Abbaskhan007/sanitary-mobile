@@ -6,6 +6,8 @@ import {
   Image,
   TouchableOpacity,
   Platform,
+  FlatList,
+  ScrollView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import Header from "../Components/Header";
@@ -20,10 +22,26 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import WorkerRequestModal from "../Components/WorkerRequestModal";
 import SellerRequestModal from "../Components/SellerRequestModal";
+import Axios from "axios";
+import constants from "../assets/constants";
+import ReviewBox from "../Components/ReviewBox";
 
 function ProfileScreen({ user }) {
   const [sellerModelVisible, setSellerModelVisible] = useState(false);
   const [workerModelVisible, setWorkerModelVisible] = useState(false);
+  const [reviews, setReviews] = useState([]);
+
+  const getReviews = async () => {
+    const { data } = await Axios.post(`${constants.url}/orders/getReviews`, {
+      customerId: user._id,
+    });
+    setReviews(data);
+  };
+
+  useState(() => {
+    getReviews();
+  }, []);
+
   const Right = () => {
     return (
       <Pressable
@@ -43,7 +61,7 @@ function ProfileScreen({ user }) {
 
   const navigation = useNavigation();
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.bg}>
         <Header color="white" Right={Right} />
       </View>
@@ -51,7 +69,7 @@ function ProfileScreen({ user }) {
         <Image
           style={styles.image}
           source={{
-            uri: "https://res.cloudinary.com/dlxyvl6sb/image/upload/v1659467449/male-electrician-works-switchboard-with-electrical-connecting-cable_169016-15209_pxzyhk.jpg",
+            uri: user.profileImage,
           }}
         />
         <Text style={styles.name}>{user.name}</Text>
@@ -133,7 +151,24 @@ function ProfileScreen({ user }) {
             <Text style={styles.orderItemText}>Cancelled</Text>
           </TouchableOpacity>
         </View>
-        <Text style={styles.heading}>My Reviews</Text>
+
+        <View>
+          <Text style={[styles.heading, { marginBottom: 6 }]}>My Reviews</Text>
+          {reviews.map(item => (
+            <ReviewBox
+              photo={item?.customerId?.profileImage}
+              name={item?.customerId?.name}
+              rating={item.rating}
+              review={item.review}
+            />
+          ))}
+          {/* <FlatList
+            data={reviews}
+            keyExtractor={item => item._id}
+            renderItem={({ item }) => <ReviewBox />}
+            style={{ paddingHorizontal: 16 }}
+          /> */}
+        </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             onPress={() =>
@@ -171,7 +206,7 @@ function ProfileScreen({ user }) {
           />
         )}
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -184,6 +219,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "400",
     color: "#30302f",
+    marginTop: 4,
   },
   orderRow: {
     flexDirection: "row",
@@ -243,9 +279,9 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   name: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "500",
-    marginTop: 2,
+    marginBottom: 5,
   },
   infoRow: {
     flexDirection: "row",
@@ -254,11 +290,10 @@ const styles = StyleSheet.create({
   },
   rowText: {
     color: "gray",
-    fontSize: 15,
-    marginLeft: 4,
+    fontSize: 16,
+    marginLeft: 6,
   },
   addressPhoneRow: {
-    flexDirection: "row",
     alignItems: "center",
     width: "100%",
     justifyContent: "space-evenly",
@@ -271,7 +306,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 20,
-
     margin: 12,
   },
 });

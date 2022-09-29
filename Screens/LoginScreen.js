@@ -15,6 +15,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview"
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 import Axios from "axios";
 import {
   ADD_TO_CART,
@@ -27,6 +28,7 @@ import {
 import constants from "../assets/constants";
 import ErrorBox from "../Components/ErrorBox";
 import BackButton from "../Components/BackButton";
+import Header from "../Components/Header";
 
 function LoginScreen({ navigation, route, loginAction, user, cart }) {
   const [email, setEmail] = useState("");
@@ -35,6 +37,7 @@ function LoginScreen({ navigation, route, loginAction, user, cart }) {
   const [error, setError] = useState(user.error);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+  const nav = useNavigation();
   useLayoutEffect(() => {
     navigation.setOptions(
       {
@@ -44,6 +47,12 @@ function LoginScreen({ navigation, route, loginAction, user, cart }) {
       },
       [navigation, route]
     );
+  });
+
+  useLayoutEffect(() => {
+    if (user.user.name) {
+      navigation.replace("User Profile");
+    }
   });
 
   const submitHandler = async e => {
@@ -62,8 +71,11 @@ function LoginScreen({ navigation, route, loginAction, user, cart }) {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardShouldPersistTaps="handled"
     >
-      <View style={{ marginTop: 32, zIndex: 8, marginHorizontal: 8 }}>
-        <BackButton  color="black" />
+      {/* <View style={{ marginTop: 32, zIndex: 8, marginHorizontal: 8 }}>
+        <BackButton color="black" />
+      </View> */}
+      <View style={{marginTop: 12, zIndex: 50}}>
+        <Header title="Login"/>
       </View>
 
       <View style={styles.imageContainer}>

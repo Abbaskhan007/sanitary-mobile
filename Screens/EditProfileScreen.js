@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  ScrollView,
 } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
@@ -34,11 +35,12 @@ function EditProfileScreen({ user, updateProfile }) {
   const [profileImage, setProfileImage] = useState(user.profileImage);
   const [errorMsg, setErrorMsg] = useState(null);
   const [address, setAddress] = useState(user.address);
-  const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
+  const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber?user.phoneNumber+"":"");
   const imageRef = useRef(null);
   const [loading, setLoading] = useState(false);
 
   const pickImage = async () => {
+    console.log("---------");
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -46,7 +48,7 @@ function EditProfileScreen({ user, updateProfile }) {
       quality: 1,
     });
 
-    console.log(result);
+    console.log("--------- -0-0", result);
 
     if (!result.cancelled) {
       setLoading(true);
@@ -125,18 +127,19 @@ function EditProfileScreen({ user, updateProfile }) {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Header />
+
       <View style={styles.form}>
         <View style={styles.imageContainer}>
           <Image style={styles.image} source={{ uri: profileImage }} />
 
           <FontAwesome
+            onPress={pickImage}
             style={styles.iconStyle}
             name="pencil"
             size={24}
             color="black"
-            onPress={pickImage}
           />
         </View>
         {errorMsg && <ErrorBox message={errorMsg} />}
@@ -155,7 +158,7 @@ function EditProfileScreen({ user, updateProfile }) {
         />
 
         <TextInput
-          value={phoneNumber + ""}
+          value={phoneNumber}
           onChangeText={setPhoneNumber}
           placeholder="Enter Phone Number"
           style={styles.inputField}
@@ -193,14 +196,14 @@ function EditProfileScreen({ user, updateProfile }) {
           <Text style={styles.buttonText}>Update Profile</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 16
+    paddingTop: 16,
   },
   form: {
     alignItems: "center",
@@ -214,7 +217,7 @@ const styles = StyleSheet.create({
     width: 200,
     borderRadius: 100,
     marginBottom: 24,
-    position: "realtive",
+    position: "relative",
   },
   image: {
     width: "100%",
@@ -243,6 +246,7 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 12,
     borderRadius: 8,
+    marginBottom: 32,
   },
   buttonText: {
     textAlign: "center",

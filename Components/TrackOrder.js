@@ -27,8 +27,7 @@ export default function TrackOrder({ status }) {
         <View
           style={[
             styles.line,
-
-            num > 1 ? styles.activeLine : styles.activeLineinActiveLine,
+            num > 1 ? styles.activeLine : styles.activeLine,
           ]}
         >
           <View style={{ ...styles.ball, marginLeft: -2 }}>
